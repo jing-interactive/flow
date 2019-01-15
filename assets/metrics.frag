@@ -53,12 +53,12 @@ vec4 voronoi( in vec2 x, float mode )
     return vec4( m, m2-m.x );
 }
 
-void main( void )
+void mainImage( out vec4 fragColor, in vec2 fragCoord )
 {
 	float mode = mod(iGlobalTime/5.0,3.0);
 	mode = floor(mode) + smoothstep( 0.8, 1.0, fract(mode) );
 	
-    vec2 p = gl_FragCoord.xy/iResolution.xx;
+    vec2 p = fragCoord.xy/iResolution.xx;
     vec4 c = voronoi( 8.0*p, mode );
 
     vec3 col = 0.5 + 0.5*sin( c.y*2.5 + vec3(1.0,1.0,1.9) );
@@ -67,5 +67,5 @@ void main( void )
 	col *= 0.4 + 0.6*sqrt(clamp( 4.0*c.w, 0.0, 1.0 ));
 	
 	
-    gl_FragColor = vec4( col, 1.0 );
+    fragColor = vec4( col, 1.0 );
 }

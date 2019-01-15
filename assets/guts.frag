@@ -50,9 +50,9 @@ vec3 texture( in vec2 p )
 
 }
 
-void main( void )
+void mainImage( out vec4 fragColor, in vec2 fragCoord )
 {
-    vec2 p = gl_FragCoord.xy / iResolution.xy;
+    vec2 p = fragCoord / iResolution.xy;
 	vec2 uv = -1.0 + 2.0*p;
 	uv.x *= iResolution.x / iResolution.y;
     vec2 or = uv;
@@ -97,5 +97,5 @@ void main( void )
 	col *= 0.5 + ll;
 	col *= 0.2 + 0.8*pow( 4.0*p.x*(1.0-p.x), 0.25 );
 
-	gl_FragColor = vec4( col, 1.0 );
+	fragColor = vec4( col, 1.0 );
 }

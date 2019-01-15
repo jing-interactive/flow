@@ -6,9 +6,9 @@ vec2 iterate( in vec2 p, in vec4 t )
     return p - 0.05*cos(t.xz + p.x*p.y + cos(t.yw+1.5*3.1415927*p.yx)+p.yx*p.yx );
 }
 
-void main( void )
+void mainImage( out vec4 fragColor, in vec2 fragCoord )
 {
-	vec2 q = gl_FragCoord.xy / iResolution.xy;
+	vec2 q = fragCoord / iResolution.xy;
 	vec2 p = -1.0 + 2.0*q;
 	p.x *= iResolution.x/iResolution.y;
     p *= 1.5;	
@@ -40,5 +40,5 @@ void main( void )
 
 	col *= 0.3 + 0.7*pow( 16.0*q.x*q.y*(1.0-q.x)*(1.0-q.y), 0.2 );
 	
-	gl_FragColor = vec4( col, 1.0 );
+	fragColor = vec4( col, 1.0 );
 }

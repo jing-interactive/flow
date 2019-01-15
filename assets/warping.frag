@@ -93,11 +93,12 @@ vec3 doMagic(vec2 p)
 	col = 1.0-col;
 	return 1.1*col*col;
 }
-void main(void)
+
+void mainImage( out vec4 fragColor, in vec2 fragCoord )
 {
-    vec2 q = gl_FragCoord.xy / iResolution.xy;
+    vec2 q = fragCoord / iResolution.xy;
     vec2 p = -1.0 + 2.0 * q;
     p.x *= iResolution.x/iResolution.y;
 
-    gl_FragColor = vec4( doMagic( p ), 1.0 );
+    fragColor = vec4( doMagic( p ), 1.0 );
 }

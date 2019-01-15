@@ -1,9 +1,9 @@
 // Created by inigo quilez - iq/2013
 // License Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License.
 
-void main(void)
+void mainImage( out vec4 fragColor, in vec2 fragCoord )
 {
-	vec2 uv = -1.0 + 2.0*gl_FragCoord.xy / iResolution.xy;
+	vec2 uv = -1.0 + 2.0*fragCoord / iResolution.xy;
 	uv.x *=  iResolution.x / iResolution.y;
 
     // background	 
@@ -33,5 +33,5 @@ void main(void)
     // vigneting	
 	color *= sqrt(1.5-0.5*length(uv));
 
-	gl_FragColor = vec4(color,1.0);
+	fragColor = vec4(color,1.0);
 }

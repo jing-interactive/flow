@@ -47,7 +47,7 @@ vec3 raymarch( in vec3 ro, in vec3 rd )
 	float t = 0.0;
 
     // dithering	
-	t += 0.05*texture2D( iChannel0, gl_FragCoord.xy/iChannelResolution[0].x ).x;
+	t += 0.05*texture2D( iChannel0, fragCoord/iChannelResolution[0].x ).x;
 	
 	for( int i=0; i<100; i++ )
 	{
@@ -69,9 +69,9 @@ vec3 raymarch( in vec3 ro, in vec3 rd )
 	return clamp( sum.xyz, 0.0, 1.0 );
 }
 
-void main(void)
+void mainImage( out vec4 fragColor, in vec2 fragCoord )
 {
-	vec2 q = gl_FragCoord.xy / iResolution.xy;
+	vec2 q = fragCoord / iResolution.xy;
     vec2 p = -1.0 + 2.0*q;
     p.x *= iResolution.x/ iResolution.y;
 	
@@ -100,5 +100,5 @@ void main(void)
 	col = col*0.5 + 0.5*col*col*(3.0-2.0*col);
 	col *= 0.25 + 0.75*pow( 16.0*q.x*q.y*(1.0-q.x)*(1.0-q.y), 0.1 );
 	
-    gl_FragColor = vec4( col, 1.0 );
+    fragColor = vec4( col, 1.0 );
 }

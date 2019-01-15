@@ -59,6 +59,15 @@ public:
 
         gl::enableDepth();
 
+        getWindow()->getSignalResize().connect([&] {
+            APP_WIDTH = getWindowWidth();
+            APP_HEIGHT = getWindowHeight();
+        });
+
+        getWindow()->getSignalClose().connect([&] {
+            writeConfig();
+        });
+
         getWindow()->getSignalKeyUp().connect([&](KeyEvent& event) {
             if (event.getCode() == KeyEvent::KEY_ESCAPE) quit();
         });
@@ -77,8 +86,10 @@ public:
             gl::clear();
 
             // Calculate shader parameters.
+            // https://www.shadertoy.com/howto
             vec3  iResolution(vec2(getWindowSize()), 1);
             float iGlobalTime = (float)getElapsedSeconds();
+            float iTimeDelta = (float)getElapsedSeconds();
             float iChannelTime0 = (float)getElapsedSeconds();
             float iChannelTime1 = (float)getElapsedSeconds();
             float iChannelTime2 = (float)getElapsedSeconds();
@@ -87,6 +98,7 @@ public:
             vec3  iChannelResolution1 = mChannel1 ? vec3(mChannel1->getSize(), 1) : vec3(1);
             vec3  iChannelResolution2 = mChannel2 ? vec3(mChannel2->getSize(), 1) : vec3(1);
             vec3  iChannelResolution3 = mChannel3 ? vec3(mChannel3->getSize(), 1) : vec3(1);
+            float iSampleRate = 1;
 
             time_t now = time(0);
             tm *   t = gmtime(&now);
@@ -99,11 +111,13 @@ public:
                     std::string vs = am::str("common/shadertoy.vert");
                     std::string fs = am::str("common/shadertoy.inc") + am::str(mToyNames[TOY_ID]);
 
-                    mGlslProg = gl::GlslProg::create(gl::GlslProg::Format()
-                        .vertex(vs)
-                        .fragment(fs)
-                        .define("iTime", "iGlobalTime")
-                    );
+                    auto format = gl::GlslProg::Format().vertex(vs).fragment(fs);
+#if defined( CINDER_GL_ES )
+                    format.version(300); // es 3.0
+#else
+                    format.version(150); // gl 3.2
+#endif
+                    mGlslProg = gl::GlslProg::create(format);
                     mToyID = TOY_ID;
                 }
                 catch (const std::exception &e) {
@@ -114,7 +128,8 @@ public:
             }
             // Set shader uniforms.
             mGlslProg->uniform("iResolution", iResolution);
-            mGlslProg->uniform("iGlobalTime", iGlobalTime);
+            mGlslProg->uniform("iTime", iGlobalTime);
+            mGlslProg->uniform("iTimeDelta", iTimeDelta);
             mGlslProg->uniform("iChannelTime[0]", iChannelTime0);
             mGlslProg->uniform("iChannelTime[1]", iChannelTime1);
             mGlslProg->uniform("iChannelTime[2]", iChannelTime2);
@@ -129,6 +144,7 @@ public:
             mGlslProg->uniform("iChannel2", 2);
             mGlslProg->uniform("iChannel3", 3);
             mGlslProg->uniform("iDate", iDate);
+            mGlslProg->uniform("iSampleRate", iSampleRate);
 
             gl::ScopedTextureBind tex0(mChannel0, 0);
             gl::ScopedTextureBind tex1(mChannel1, 1);

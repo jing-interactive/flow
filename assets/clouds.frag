@@ -100,9 +100,9 @@ vec4 raymarch( in vec3 ro, in vec3 rd )
 	return clamp( sum, 0.0, 1.0 );
 }
 
-void main(void)
+void mainImage( out vec4 fragColor, in vec2 fragCoord )
 {
-	vec2 q = gl_FragCoord.xy / iResolution.xy;
+	vec2 q = fragCoord / iResolution.xy;
     vec2 p = -1.0 + 2.0*q;
     p.x *= iResolution.x/ iResolution.y;
     vec2 mo = -1.0 + 2.0*iMouse.xy / iResolution.xy;
@@ -125,5 +125,5 @@ void main(void)
 	col = mix( col, res.xyz, res.w );
 	col += 0.1*vec3(1.0,0.4,0.2)*pow( sun, 3.0 );
 	    
-    gl_FragColor = vec4( col, 1.0 );
+    fragColor = vec4( col, 1.0 );
 }

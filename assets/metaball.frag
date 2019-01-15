@@ -59,8 +59,3 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     // Output to screen
     fragColor = vec4(col,1.0);
 }
-
-void main(void)
-{
-    mainImage(gl_FragColor, gl_FragCoord.xy);
-}
