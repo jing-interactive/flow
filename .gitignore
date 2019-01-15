@@ -1,0 +1,7 @@
+/assets/MiniConfig.xml
+/bin
+/vc2015/x64
+*.user
+*.db
+*.opendb
+.vs
