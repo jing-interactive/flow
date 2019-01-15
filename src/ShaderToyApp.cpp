@@ -1,8 +1,8 @@
 #include "cinder/app/App.h"
 #include "cinder/app/RendererGl.h"
 #include "cinder/gl/gl.h"
-#include "cinder/CameraUi.h"
 #include "cinder/Log.h"
+#include "cinder/params/Params.h"
 
 #include "AssetManager.h"
 #include "MiniConfig.h"
@@ -15,57 +15,58 @@ using namespace std;
 
 class ShaderToyApp : public App
 {
-  public:
+public:
 
-      void mouseDown(MouseEvent event) override
-      {
-          mMouse.x = (float)event.getPos().x;
-          mMouse.y = (float)event.getPos().y;
-          mMouse.z = (float)event.getPos().x;
-          mMouse.w = (float)event.getPos().y;
-      }
+    void mouseDown(MouseEvent event) override
+    {
+        mMouse.x = (float)event.getPos().x;
+        mMouse.y = (float)event.getPos().y;
+        mMouse.z = (float)event.getPos().x;
+        mMouse.w = (float)event.getPos().y;
+    }
 
-      void mouseDrag(MouseEvent event) override
-      {
-          mMouse.x = (float)event.getPos().x;
-          mMouse.y = (float)event.getPos().y;
-      }
+    void mouseDrag(MouseEvent event) override
+    {
+        mMouse.x = (float)event.getPos().x;
+        mMouse.y = (float)event.getPos().y;
+    }
+
+    vector<string> listToyFiles()
+    {
+        vector<string> files;
+        auto assetRoot = getAssetPath("");
+        for (auto& p :
+            fs::directory_iterator(assetRoot))
+        {
+            auto ext = p.path().extension();
+            if (ext == ".frag" || ext == ".fs" || ext == ".fragment")
+            {
+                auto filename = p.path().generic_string();
+                filename.replace(filename.find(assetRoot.generic_string()),
+                    assetRoot.generic_string().size(),
+                    ""); // Left trim the assets prefix
+
+                files.push_back(filename);
+            }
+        }
+
+        return files;
+    }
 
     void setup() override
     {
         log::makeLogger<log::LoggerFile>();
-        
-        auto aabb = am::triMesh(MESH_NAME)->calcBoundingBox();
-        mCam.lookAt(aabb.getMax() * 2.0f, aabb.getCenter());
-        mCamUi = CameraUi( &mCam, getWindow(), -1 );
-        
-        createConfigUI({200, 200});
-        gl::enableDepth();
 
-        getWindow()->getSignalResize().connect([&] {
-            APP_WIDTH = getWindowWidth();
-            APP_HEIGHT = getWindowHeight();
-            mCam.setAspectRatio( getWindowAspectRatio() );
-        });
+        auto params = createConfigUI({ 300, 300 });
+        gl::enableDepth();
 
         getWindow()->getSignalKeyUp().connect([&](KeyEvent& event) {
             if (event.getCode() == KeyEvent::KEY_ESCAPE) quit();
         });
-        
-#if 1
-        try {
-            std::string vs = am::str(VS_NAME);
-            std::string fs = am::str("common/shadertoy.inc") + am::str(FS_NAME);
 
-            mGlslProg = gl::GlslProg::create(gl::GlslProg::Format().vertex(vs).fragment(fs));
-        }
-        catch (const std::exception &e) {
-            // Uhoh, something went wrong, but it's not fatal.
-            CI_LOG_EXCEPTION("Failed to compile the shader: ", e);
-        }
-#else
-        mGlslProg = am::glslProg(VS_NAME, FS_NAME);
-#endif
+        mToyNames = listToyFiles();
+        ADD_ENUM_TO_INT(params.get(), TOY_ID, mToyNames);
+
         mChannel0 = am::texture2d(TEX0_NAME);
         mChannel1 = am::texture2d(TEX1_NAME);
         mChannel2 = am::texture2d(TEX2_NAME);
@@ -73,7 +74,7 @@ class ShaderToyApp : public App
 
         getWindow()->getSignalDraw().connect([&] {
             gl::clear();
-        
+
             // Calculate shader parameters.
             vec3  iResolution(vec2(getWindowSize()), 1);
             float iGlobalTime = (float)getElapsedSeconds();
@@ -90,6 +91,26 @@ class ShaderToyApp : public App
             tm *   t = gmtime(&now);
             vec4   iDate(float(t->tm_year + 1900), float(t->tm_mon + 1), float(t->tm_mday), float(t->tm_hour * 3600 + t->tm_min * 60 + t->tm_sec));
 
+            if (mToyID != TOY_ID)
+            {
+                try {
+                    GLSL_ERROR = "";
+                    std::string vs = am::str("common/shadertoy.vert");
+                    std::string fs = am::str("common/shadertoy.inc") + am::str(mToyNames[TOY_ID]);
+
+                    mGlslProg = gl::GlslProg::create(gl::GlslProg::Format()
+                        .vertex(vs)
+                        .fragment(fs)
+                        .define("iTime", "iGlobalTime")
+                    );
+                    mToyID = TOY_ID;
+                }
+                catch (const std::exception &e) {
+                    // Uhoh, something went wrong, but it's not fatal.
+                    CI_LOG_EXCEPTION("Failed to compile the shader: ", e);
+                    GLSL_ERROR = e.what();
+                }
+            }
             // Set shader uniforms.
             mGlslProg->uniform("iResolution", iResolution);
             mGlslProg->uniform("iGlobalTime", iGlobalTime);
@@ -122,10 +143,8 @@ class ShaderToyApp : public App
 #endif
         });
     }
-    
+
 private:
-    CameraPersp         mCam;
-    CameraUi            mCamUi;
     gl::GlslProgRef     mGlslProg;
     //! Texture slots for our shader, based on ShaderToy.
     gl::TextureRef mChannel0;
@@ -134,10 +153,12 @@ private:
     gl::TextureRef mChannel3;
     //! Our mouse position: xy = current position while mouse down, zw = last click position.
     vec4 mMouse;
+    int mToyID = -1;
+    vector<string> mToyNames;
 };
 
-CINDER_APP( ShaderToyApp, RendererGl, [](App::Settings* settings) {
+CINDER_APP(ShaderToyApp, RendererGl, [](App::Settings* settings) {
     readConfig();
     settings->setWindowSize(APP_WIDTH, APP_HEIGHT);
     settings->setMultiTouchEnabled(false);
-} )
+})
