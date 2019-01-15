@@ -40,7 +40,7 @@ vec4 map( vec3 p )
 	return vec4( col, den );
 }
 
-vec3 raymarch( in vec3 ro, in vec3 rd )
+vec3 raymarch( in vec3 ro, in vec3 rd, in vec2 fragCoord )
 {
 	vec4 sum = vec4( 0.0 );
 
@@ -94,7 +94,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     vec3 rd = normalize( p.x*uu + p.y*vv + 2.0*ww );
 	
     // raymarch	
-	vec3 col = raymarch( ro, rd );
+	vec3 col = raymarch( ro, rd, fragCoord );
 	
 	// contrast and vignetting	
 	col = col*0.5 + 0.5*col*col*(3.0-2.0*col);
