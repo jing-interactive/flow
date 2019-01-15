@@ -17,28 +17,11 @@
 		00B9955A1B128DF400A5C623 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00B995581B128DF400A5C623 /* IOKit.framework */; };
 		00B9955B1B128DF400A5C623 /* IOSurface.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00B995591B128DF400A5C623 /* IOSurface.framework */; };
 		5323E6B20EAFCA74003A9687 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5323E6B10EAFCA74003A9687 /* CoreVideo.framework */; };
-		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
-		5B9943F3772046F5A243EBA5 /* TuioHelper.h in Headers */ = {isa = PBXBuildFile; fileRef = 63715476EE9F448A9879CCFD /* TuioHelper.h */; };
-		7C10637F40BE46B0BAD3AC7B /* TextureHelper.h in Headers */ = {isa = PBXBuildFile; fileRef = 54F1B260B1994B36862A4307 /* TextureHelper.h */; };
-		1FC40DA4B8BC479496CBA82C /* StateMachine.h in Headers */ = {isa = PBXBuildFile; fileRef = 1BBDFEB0A093431E96FCCE97 /* StateMachine.h */; };
-		A19EC508C00844B2A1725BD3 /* OscHelper.h in Headers */ = {isa = PBXBuildFile; fileRef = B9972AEC27F0479E8E9A3A7D /* OscHelper.h */; };
-		2583BA5C84CA4755BFF59267 /* NvOptimusEnablement.h in Headers */ = {isa = PBXBuildFile; fileRef = D24CE90950E04CDB9C074B21 /* NvOptimusEnablement.h */; };
-		25DCF24EC4BF41028BB1F23E /* MotionHelper.h in Headers */ = {isa = PBXBuildFile; fileRef = D765FB4F8FD149C88F99BCBA /* MotionHelper.h */; };
-		5A07700C59DD46B3A8F5B1F5 /* MiniConfigImgui.h in Headers */ = {isa = PBXBuildFile; fileRef = 1B6E8B2A9A574186BCD83527 /* MiniConfigImgui.h */; };
-		71A054E1D90F4986B9FBFF13 /* MiniConfig.h in Headers */ = {isa = PBXBuildFile; fileRef = 2EAEEC269F8144A0839519AF /* MiniConfig.h */; };
-		E8D3210AF3F74D6794E3CB53 /* GlslParamsBuilderImgui.h in Headers */ = {isa = PBXBuildFile; fileRef = EC37FCDED4D14E07AA0C894A /* GlslParamsBuilderImgui.h */; };
-		BC591158B0FE4CA19A86B959 /* GlslParamsBuilder.h in Headers */ = {isa = PBXBuildFile; fileRef = 998F5DAA38E740A9815B7236 /* GlslParamsBuilder.h */; };
-		5AE3B36C634F43AD85C2E9CD /* FontHelper.h in Headers */ = {isa = PBXBuildFile; fileRef = 7857129A25554169BCB798C6 /* FontHelper.h */; };
-		64FB452361AC487B8514AB49 /* CaptureHelper.h in Headers */ = {isa = PBXBuildFile; fileRef = E84A8EF7D8B34A8BBF459D7D /* CaptureHelper.h */; };
-		517443ECA05849FA8B45F953 /* AssetManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B8D4E37AE3B43DB9F427126 /* AssetManager.h */; };
-		7A75ADF1CA8A43248BA78BFB /* AnsiToUtf.h in Headers */ = {isa = PBXBuildFile; fileRef = 139E1C1666D74338BE04B0C0 /* AnsiToUtf.h */; };
-		BB1ED1EE44E148DABC74AC21 /* MiniConfig.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 71E890ACB92C44099CE78336 /* MiniConfig.cpp */; };
-		D34E0BDC445F4011AAEF5E50 /* AssetManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E348D890FFF42198BC1CC78 /* AssetManager.cpp */; };
-		9B2743372EA34ED6926990D2 /* ShaderToyApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EA8B711C4D0C4444B61167F1 /* ShaderToyApp.cpp */; };
-		916210E94C3F47C7B7AF0008 /* item.def in Headers */ = {isa = PBXBuildFile; fileRef = BCFFD6322B0F4ADF8521F140 /* item.def */; };
-		34A8D298A19D4991812F567B /* ShaderToy_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = D1E34B7A906E4EFBAE67FACB /* ShaderToy_Prefix.pch */; };
 		7187AA57753E45B5B0AFDC87 /* CinderApp.icns in Resources */ = {isa = PBXBuildFile; fileRef = 147E7CB8296348D580263AF3 /* CinderApp.icns */; };
-		41E1DF87B665473E8FE259F1 /* Resources.h in Headers */ = {isa = PBXBuildFile; fileRef = 4D6AEE7A5F0C41B194639ED8 /* Resources.h */; };
+		7420FF6521EE2BC80002E508 /* AssetManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7420FF6321EE2BC80002E508 /* AssetManager.cpp */; };
+		7420FF6621EE2BC80002E508 /* MiniConfig.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7420FF6421EE2BC80002E508 /* MiniConfig.cpp */; };
+		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+		9B2743372EA34ED6926990D2 /* ShaderToyApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EA8B711C4D0C4444B61167F1 /* ShaderToyApp.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -52,32 +35,32 @@
 		00B995581B128DF400A5C623 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
 		00B995591B128DF400A5C623 /* IOSurface.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOSurface.framework; path = System/Library/Frameworks/IOSurface.framework; sourceTree = SDKROOT; };
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
+		147E7CB8296348D580263AF3 /* CinderApp.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = CinderApp.icns; path = ../resources/CinderApp.icns; sourceTree = "<group>"; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		4D6AEE7A5F0C41B194639ED8 /* Resources.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Resources.h; path = ../include/Resources.h; sourceTree = "<group>"; };
 		5323E6B10EAFCA74003A9687 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = /System/Library/Frameworks/CoreVideo.framework; sourceTree = "<absolute>"; };
+		7420FF6321EE2BC80002E508 /* AssetManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AssetManager.cpp; sourceTree = "<group>"; };
+		7420FF6421EE2BC80002E508 /* MiniConfig.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MiniConfig.cpp; sourceTree = "<group>"; };
+		7420FF6821EE2BD70002E508 /* CaptureHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CaptureHelper.h; sourceTree = "<group>"; };
+		7420FF6921EE2BD70002E508 /* StateMachine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StateMachine.h; sourceTree = "<group>"; };
+		7420FF6A21EE2BD70002E508 /* AnsiToUtf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnsiToUtf.h; sourceTree = "<group>"; };
+		7420FF6B21EE2BD70002E508 /* TuioHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TuioHelper.h; sourceTree = "<group>"; };
+		7420FF6C21EE2BD70002E508 /* AssetManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AssetManager.h; sourceTree = "<group>"; };
+		7420FF6D21EE2BD70002E508 /* GlslParamsBuilderImgui.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GlslParamsBuilderImgui.h; sourceTree = "<group>"; };
+		7420FF6E21EE2BD70002E508 /* MiniConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MiniConfig.h; sourceTree = "<group>"; };
+		7420FF6F21EE2BD70002E508 /* OscHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OscHelper.h; sourceTree = "<group>"; };
+		7420FF7021EE2BD70002E508 /* FontHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FontHelper.h; sourceTree = "<group>"; };
+		7420FF7121EE2BD70002E508 /* MiniConfigImgui.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MiniConfigImgui.h; sourceTree = "<group>"; };
+		7420FF7221EE2BD70002E508 /* TextureHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextureHelper.h; sourceTree = "<group>"; };
+		7420FF7321EE2BD70002E508 /* MotionHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MotionHelper.h; sourceTree = "<group>"; };
+		7420FF7421EE2BD70002E508 /* NvOptimusEnablement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NvOptimusEnablement.h; sourceTree = "<group>"; };
+		7420FF7521EE2BD70002E508 /* GlslParamsBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GlslParamsBuilder.h; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* ShaderToy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ShaderToy.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		4D6AEE7A5F0C41B194639ED8 /* Resources.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ../include/Resources.h; sourceTree = "<group>"; name = Resources.h; };
-		147E7CB8296348D580263AF3 /* CinderApp.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = ../resources/CinderApp.icns; sourceTree = "<group>"; name = CinderApp.icns; };
-		F9827B5F5DCA408CBE0B2231 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; name = Info.plist; };
-		D1E34B7A906E4EFBAE67FACB /* ShaderToy_Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = "\"\""; path = ShaderToy_Prefix.pch; sourceTree = "<group>"; name = ShaderToy_Prefix.pch; };
-		BCFFD6322B0F4ADF8521F140 /* item.def */ = {isa = PBXFileReference; lastKnownFileType = "\"\""; path = ../include/item.def; sourceTree = "<group>"; name = item.def; };
-		EA8B711C4D0C4444B61167F1 /* ShaderToyApp.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; path = ../src/ShaderToyApp.cpp; sourceTree = "<group>"; name = ShaderToyApp.cpp; };
-		1E348D890FFF42198BC1CC78 /* AssetManager.cpp */ = {isa = PBXFileReference; path = "D:/__svn_pool/Cinder/blocks/Cinder-VNM/src/AssetManager.cpp"; sourceTree = "<group>"; explicitFileType = "\"\""; name = AssetManager.cpp; };
-		71E890ACB92C44099CE78336 /* MiniConfig.cpp */ = {isa = PBXFileReference; path = "D:/__svn_pool/Cinder/blocks/Cinder-VNM/src/MiniConfig.cpp"; sourceTree = "<group>"; explicitFileType = "\"\""; name = MiniConfig.cpp; };
-		139E1C1666D74338BE04B0C0 /* AnsiToUtf.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "D:/__svn_pool/Cinder/blocks/Cinder-VNM/include/AnsiToUtf.h"; sourceTree = "<group>"; name = AnsiToUtf.h; };
-		7B8D4E37AE3B43DB9F427126 /* AssetManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "D:/__svn_pool/Cinder/blocks/Cinder-VNM/include/AssetManager.h"; sourceTree = "<group>"; name = AssetManager.h; };
-		E84A8EF7D8B34A8BBF459D7D /* CaptureHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "D:/__svn_pool/Cinder/blocks/Cinder-VNM/include/CaptureHelper.h"; sourceTree = "<group>"; name = CaptureHelper.h; };
-		7857129A25554169BCB798C6 /* FontHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "D:/__svn_pool/Cinder/blocks/Cinder-VNM/include/FontHelper.h"; sourceTree = "<group>"; name = FontHelper.h; };
-		998F5DAA38E740A9815B7236 /* GlslParamsBuilder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "D:/__svn_pool/Cinder/blocks/Cinder-VNM/include/GlslParamsBuilder.h"; sourceTree = "<group>"; name = GlslParamsBuilder.h; };
-		EC37FCDED4D14E07AA0C894A /* GlslParamsBuilderImgui.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "D:/__svn_pool/Cinder/blocks/Cinder-VNM/include/GlslParamsBuilderImgui.h"; sourceTree = "<group>"; name = GlslParamsBuilderImgui.h; };
-		2EAEEC269F8144A0839519AF /* MiniConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "D:/__svn_pool/Cinder/blocks/Cinder-VNM/include/MiniConfig.h"; sourceTree = "<group>"; name = MiniConfig.h; };
-		1B6E8B2A9A574186BCD83527 /* MiniConfigImgui.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "D:/__svn_pool/Cinder/blocks/Cinder-VNM/include/MiniConfigImgui.h"; sourceTree = "<group>"; name = MiniConfigImgui.h; };
-		D765FB4F8FD149C88F99BCBA /* MotionHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "D:/__svn_pool/Cinder/blocks/Cinder-VNM/include/MotionHelper.h"; sourceTree = "<group>"; name = MotionHelper.h; };
-		D24CE90950E04CDB9C074B21 /* NvOptimusEnablement.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "D:/__svn_pool/Cinder/blocks/Cinder-VNM/include/NvOptimusEnablement.h"; sourceTree = "<group>"; name = NvOptimusEnablement.h; };
-		B9972AEC27F0479E8E9A3A7D /* OscHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "D:/__svn_pool/Cinder/blocks/Cinder-VNM/include/OscHelper.h"; sourceTree = "<group>"; name = OscHelper.h; };
-		1BBDFEB0A093431E96FCCE97 /* StateMachine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "D:/__svn_pool/Cinder/blocks/Cinder-VNM/include/StateMachine.h"; sourceTree = "<group>"; name = StateMachine.h; };
-		54F1B260B1994B36862A4307 /* TextureHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "D:/__svn_pool/Cinder/blocks/Cinder-VNM/include/TextureHelper.h"; sourceTree = "<group>"; name = TextureHelper.h; };
-		63715476EE9F448A9879CCFD /* TuioHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "D:/__svn_pool/Cinder/blocks/Cinder-VNM/include/TuioHelper.h"; sourceTree = "<group>"; name = TuioHelper.h; };
+		BCFFD6322B0F4ADF8521F140 /* item.def */ = {isa = PBXFileReference; lastKnownFileType = "\"\""; name = item.def; path = ../include/item.def; sourceTree = "<group>"; };
+		D1E34B7A906E4EFBAE67FACB /* ShaderToy_Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = "\"\""; path = ShaderToy_Prefix.pch; sourceTree = "<group>"; };
+		EA8B711C4D0C4444B61167F1 /* ShaderToyApp.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = ShaderToyApp.cpp; path = ../src/ShaderToyApp.cpp; sourceTree = "<group>"; };
+		F9827B5F5DCA408CBE0B2231 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -102,6 +85,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		01B97315FEAEA392516A2CEA /* Blocks */ = {
+			isa = PBXGroup;
+			children = (
+				C9ED073A1D804D0CA9B9E092 /* vnm */,
+			);
+			name = Blocks;
+			sourceTree = "<group>";
+		};
 		080E96DDFE201D6D7F000001 /* Source */ = {
 			isa = PBXGroup;
 			children = (
@@ -158,53 +149,6 @@
 			name = ShaderToy;
 			sourceTree = "<group>";
 		};
-		423FF409B3724B0FA9B12318 /* src */ = {
-			isa = PBXGroup;
-			children = (
-				1E348D890FFF42198BC1CC78 /* AssetManager.cpp */,
-				71E890ACB92C44099CE78336 /* MiniConfig.cpp */,
-			);
-			name = src;
-			sourceTree = "<group>";
-		};
-		5F4503EEAC0348B8BB806C26 /* include */ = {
-			isa = PBXGroup;
-			children = (
-				139E1C1666D74338BE04B0C0 /* AnsiToUtf.h */,
-				7B8D4E37AE3B43DB9F427126 /* AssetManager.h */,
-				E84A8EF7D8B34A8BBF459D7D /* CaptureHelper.h */,
-				7857129A25554169BCB798C6 /* FontHelper.h */,
-				998F5DAA38E740A9815B7236 /* GlslParamsBuilder.h */,
-				EC37FCDED4D14E07AA0C894A /* GlslParamsBuilderImgui.h */,
-				2EAEEC269F8144A0839519AF /* MiniConfig.h */,
-				1B6E8B2A9A574186BCD83527 /* MiniConfigImgui.h */,
-				D765FB4F8FD149C88F99BCBA /* MotionHelper.h */,
-				D24CE90950E04CDB9C074B21 /* NvOptimusEnablement.h */,
-				B9972AEC27F0479E8E9A3A7D /* OscHelper.h */,
-				1BBDFEB0A093431E96FCCE97 /* StateMachine.h */,
-				54F1B260B1994B36862A4307 /* TextureHelper.h */,
-				63715476EE9F448A9879CCFD /* TuioHelper.h */,
-			);
-			name = include;
-			sourceTree = "<group>";
-		};
-		C9ED073A1D804D0CA9B9E092 /* vnm */ = {
-			isa = PBXGroup;
-			children = (
-				423FF409B3724B0FA9B12318 /* src */,
-				5F4503EEAC0348B8BB806C26 /* include */,
-			);
-			name = vnm;
-			sourceTree = "<group>";
-		};
-		01B97315FEAEA392516A2CEA /* Blocks */ = {
-			isa = PBXGroup;
-			children = (
-				C9ED073A1D804D0CA9B9E092 /* vnm */,
-			);
-			name = Blocks;
-			sourceTree = "<group>";
-		};
 		29B97315FDCFA39411CA2CEA /* Headers */ = {
 			isa = PBXGroup;
 			children = (
@@ -233,6 +177,47 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		7420FF6221EE2BC80002E508 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				7420FF6321EE2BC80002E508 /* AssetManager.cpp */,
+				7420FF6421EE2BC80002E508 /* MiniConfig.cpp */,
+			);
+			name = src;
+			path = "../../Cinder/blocks/Cinder-VNM/src";
+			sourceTree = "<group>";
+		};
+		7420FF6721EE2BD70002E508 /* include */ = {
+			isa = PBXGroup;
+			children = (
+				7420FF6821EE2BD70002E508 /* CaptureHelper.h */,
+				7420FF6921EE2BD70002E508 /* StateMachine.h */,
+				7420FF6A21EE2BD70002E508 /* AnsiToUtf.h */,
+				7420FF6B21EE2BD70002E508 /* TuioHelper.h */,
+				7420FF6C21EE2BD70002E508 /* AssetManager.h */,
+				7420FF6D21EE2BD70002E508 /* GlslParamsBuilderImgui.h */,
+				7420FF6E21EE2BD70002E508 /* MiniConfig.h */,
+				7420FF6F21EE2BD70002E508 /* OscHelper.h */,
+				7420FF7021EE2BD70002E508 /* FontHelper.h */,
+				7420FF7121EE2BD70002E508 /* MiniConfigImgui.h */,
+				7420FF7221EE2BD70002E508 /* TextureHelper.h */,
+				7420FF7321EE2BD70002E508 /* MotionHelper.h */,
+				7420FF7421EE2BD70002E508 /* NvOptimusEnablement.h */,
+				7420FF7521EE2BD70002E508 /* GlslParamsBuilder.h */,
+			);
+			name = include;
+			path = "../../Cinder/blocks/Cinder-VNM/include";
+			sourceTree = "<group>";
+		};
+		C9ED073A1D804D0CA9B9E092 /* vnm */ = {
+			isa = PBXGroup;
+			children = (
+				7420FF6721EE2BD70002E508 /* include */,
+				7420FF6221EE2BC80002E508 /* src */,
+			);
+			name = vnm;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -259,6 +244,9 @@
 /* Begin PBXProject section */
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 1010;
+			};
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "ShaderToy" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
@@ -294,9 +282,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7420FF6621EE2BC80002E508 /* MiniConfig.cpp in Sources */,
+				7420FF6521EE2BC80002E508 /* AssetManager.cpp in Sources */,
 				9B2743372EA34ED6926990D2 /* ShaderToyApp.cpp in Sources */,
-				D34E0BDC445F4011AAEF5E50 /* AssetManager.cpp in Sources */,
-				BB1ED1EE44E148DABC74AC21 /* MiniConfig.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -306,18 +294,19 @@
 		C01FCF4B08A954540054247B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = YES;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEAD_CODE_STRIPPING = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = ShaderToy_Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = ShaderToy_Prefix.pch;
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
@@ -332,6 +321,7 @@
 		C01FCF4C08A954540054247B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -339,12 +329,12 @@
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
 				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = ShaderToy_Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"NDEBUG=1",
 					"$(inherited)",
 				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = ShaderToy_Prefix.pch;
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
@@ -361,21 +351,41 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				CINDER_PATH = "D:/__svn_pool/Cinder";
+				CINDER_PATH = ../../Cinder;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++11";
 				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/include\"";
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
-				USER_HEADER_SEARCH_PATHS = (
-					"\"$(CINDER_PATH)/include\" ../include",
-					"\"D:/__svn_pool/Cinder/blocks/Cinder-VNM/include\"",
-					D:/__svn_pool/Cinder/blocks,
-				);
+				USER_HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/include\" ../include \"$(CINDER_PATH)/blocks/Cinder-VNM/include\" $(CINDER_PATH)/blocks";
 			};
 			name = Debug;
 		};
@@ -383,19 +393,39 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				CINDER_PATH = "D:/__svn_pool/Cinder";
+				CINDER_PATH = ../../Cinder;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++11";
 				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/include\"";
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				SDKROOT = macosx;
-				USER_HEADER_SEARCH_PATHS = (
-					"\"$(CINDER_PATH)/include\" ../include",
-					"\"D:/__svn_pool/Cinder/blocks/Cinder-VNM/include\"",
-					D:/__svn_pool/Cinder/blocks,
-				);
+				USER_HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/include\" ../include \"$(CINDER_PATH)/blocks/Cinder-VNM/include\" $(CINDER_PATH)/blocks";
 			};
 			name = Release;
 		};

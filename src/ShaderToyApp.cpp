@@ -57,7 +57,6 @@ public:
     {
         log::makeLogger<log::LoggerFile>();
 
-        auto params = createConfigUI({ 300, 300 });
         gl::enableDepth();
 
         getWindow()->getSignalKeyUp().connect([&](KeyEvent& event) {
@@ -65,8 +64,10 @@ public:
         });
 
         mToyNames = listToyFiles();
+#ifndef CINDER_COCOA_TOUCH
+        auto params = createConfigUI({ 300, 300 });
         ADD_ENUM_TO_INT(params.get(), TOY_ID, mToyNames);
-
+#endif
         mChannel0 = am::texture2d(TEX0_NAME);
         mChannel1 = am::texture2d(TEX1_NAME);
         mChannel2 = am::texture2d(TEX2_NAME);
