@@ -30,7 +30,7 @@ vec2 map( vec2 p )
 	return vec2( cos(a), sin(a) );
 }
 
-vec3 texture( in vec2 p )
+vec3 texture_( in vec2 p )
 {
 	float f = 0.0;
 	
@@ -66,9 +66,9 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
 		float h = float(i)/64.0;
 		float w = 1.0-h;
 		#ifdef PROCEDURAL
-		vec3 ttt = w*texture(0.5*uv );
+		vec3 ttt = w*texture_(0.5*uv );
 		#else
-		vec3 ttt = w*texture2D( iChannel2, 0.5*uv  ).xyz;
+		vec3 ttt = w*texture( iChannel2, 0.5*uv  ).xyz;
 		#endif
 		ttt *= mix( 0.8*vec3(0.4,0.55,0.65), vec3(1.0,0.9,0.8), 0.5 + 0.5*dot( dir, -vec2(0.707) ) );
 		
@@ -83,7 +83,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
 	float ll = length(uv-or);
 	vec3 nor = normalize( vec3(dFdx(ll), 4.0/iResolution.x, dFdy(ll) ) );
 
-	float tex = texture2D(iChannel2,4.0*uv + 4.0*p).x;
+	float tex = texture(iChannel2,4.0*uv + 4.0*p).x;
 	vec3 bnor = normalize( vec3(dFdx(tex), 400.0/iResolution.x, dFdy(tex)) );
 	nor = normalize( nor + 0.5*normalize(bnor) );
 

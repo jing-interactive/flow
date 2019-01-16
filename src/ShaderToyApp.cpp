@@ -125,6 +125,7 @@ public:
                     // Uhoh, something went wrong, but it's not fatal.
                     CI_LOG_EXCEPTION("Failed to compile the shader: ", e);
                     GLSL_ERROR = e.what();
+                    TOY_ID = mToyID;
                 }
             }
             // Set shader uniforms.

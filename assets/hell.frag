@@ -8,7 +8,7 @@ float noise( in vec3 x )
 	f = f*f*(3.0-2.0*f);
 	
 	vec2 uv = (p.xy+vec2(37.0,17.0)*p.z) + f.xy;
-	vec2 rg = texture2D( iChannel0, (uv+ 0.5)/256.0, -100.0 ).yx;
+	vec2 rg = texture( iChannel0, (uv+ 0.5)/256.0, -100.0 ).yx;
 	return mix( rg.x, rg.y, f.z );
 }
 
@@ -47,7 +47,7 @@ vec3 raymarch( in vec3 ro, in vec3 rd, in vec2 fragCoord )
 	float t = 0.0;
 
     // dithering	
-	t += 0.05*texture2D( iChannel0, fragCoord/iChannelResolution[0].x ).x;
+	t += 0.05*texture( iChannel0, fragCoord/iChannelResolution[0].x ).x;
 	
 	for( int i=0; i<100; i++ )
 	{
@@ -84,8 +84,8 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
 	float cr = 0.5*cos(0.7*iGlobalTime);
 	
     // shake		
-	ro += 0.1*(-1.0+2.0*texture2D( iChannel0, iGlobalTime*vec2(0.010,0.014) ).xyz);
-	ta += 0.1*(-1.0+2.0*texture2D( iChannel0, iGlobalTime*vec2(0.013,0.008) ).xyz);
+	ro += 0.1*(-1.0+2.0*texture( iChannel0, iGlobalTime*vec2(0.010,0.014) ).xyz);
+	ta += 0.1*(-1.0+2.0*texture( iChannel0, iGlobalTime*vec2(0.013,0.008) ).xyz);
 	
 	// build ray
     vec3 ww = normalize( ta - ro);
