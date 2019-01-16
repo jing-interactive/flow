@@ -1,4 +1,5 @@
-/assets/MiniConfig.xml
+MiniConfig.xml
+imgui.ini
 /bin
 /vc2015/x64
 *.user
