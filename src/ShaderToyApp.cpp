@@ -112,10 +112,11 @@ public:
                     std::string fs = am::str("common/shadertoy.inc") + am::str(mToyNames[TOY_ID]);
 
                     auto format = gl::GlslProg::Format().vertex(vs).fragment(fs);
+                    //https://github.com/mattdesl/lwjgl-basics/wiki/GLSL-Versions
 #if defined( CINDER_GL_ES )
                     format.version(300); // es 3.0
 #else
-                    format.version(150); // gl 3.2
+                    format.version(330); // gl 3.3
 #endif
                     mGlslProg = gl::GlslProg::create(format);
                     mToyID = TOY_ID;

@@ -1,3 +1,7 @@
+#ifdef GL_ES
+precision mediump float;
+#endif 
+
 uniform vec3      iResolution; // viewport resolution (in pixels)
 uniform float     iTime; // shader playback time (in seconds)
 uniform float     iTimeDelta; // render time (in seconds)
@@ -12,11 +16,13 @@ uniform sampler2D iChannel3; // input channel 3 (TODO: support samplerCube)
 uniform vec4      iDate; // (year, month, day, time in seconds)
 uniform float     iSampleRate;
 
+out vec4 oFragColor;
+
 void mainImage( out vec4 fragColor, in vec2 fragCoord );
 
 void main(void)
 {
-    mainImage(gl_FragColor, gl_FragCoord.xy);
+    mainImage(oFragColor, gl_FragCoord.xy);
 }
 
 #define iGlobalTime iTime
