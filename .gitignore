@@ -1,6 +1,7 @@
 MiniConfig.xml
 imgui.ini
-/bin
+/Debug
+/Release
 /vc2015/x64
 *.user
 *.db
