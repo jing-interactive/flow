@@ -2,6 +2,8 @@
 #include "cinder/app/RendererGl.h"
 #include "cinder/gl/gl.h"
 #include "cinder/Log.h"
+#include "cinder/Utilities.h"
+#include "cinder/FileWatcher.h"
 #include "cinder/params/Params.h"
 
 #include "AssetManager.h"
@@ -106,27 +108,30 @@ public:
 
             if (mToyID != TOY_ID)
             {
-                try {
-                    GLSL_ERROR = "";
-                    std::string vs = am::str("common/shadertoy.vert");
-                    std::string fs = am::str("common/shadertoy.inc") + am::str(mToyNames[TOY_ID]);
+                mWatchConnection.disconnect();
+                mWatchConnection = mFileWatcher.watch(getAssetPath(mToyNames[TOY_ID]), [&](const WatchEvent& event) {
+                    try {
+                        GLSL_ERROR = "";
+                        std::string vs = am::str("common/shadertoy.vert");
+                        std::string fs = am::str("common/shadertoy.inc") + loadString(loadAsset(mToyNames[TOY_ID]));
 
-                    auto format = gl::GlslProg::Format().vertex(vs).fragment(fs);
-                    //https://github.com/mattdesl/lwjgl-basics/wiki/GLSL-Versions
+                        auto format = gl::GlslProg::Format().vertex(vs).fragment(fs);
+                        //https://github.com/mattdesl/lwjgl-basics/wiki/GLSL-Versions
 #if defined( CINDER_GL_ES )
-                    format.version(300); // es 3.0
+                        format.version(300); // es 3.0
 #else
-                    format.version(330); // gl 3.3
+                        format.version(330); // gl 3.3
 #endif
-                    mGlslProg = gl::GlslProg::create(format);
-                    mToyID = TOY_ID;
-                }
-                catch (const std::exception &e) {
-                    // Uhoh, something went wrong, but it's not fatal.
-                    CI_LOG_EXCEPTION("Failed to compile the shader: ", e);
-                    GLSL_ERROR = e.what();
-                    TOY_ID = mToyID;
-                }
+                        mGlslProg = gl::GlslProg::create(format);
+                        mToyID = TOY_ID;
+                    }
+                    catch (const std::exception &e) {
+                        // Uhoh, something went wrong, but it's not fatal.
+                        CI_LOG_EXCEPTION("Failed to compile the shader: ", e);
+                        GLSL_ERROR = e.what();
+                        TOY_ID = mToyID;
+                    }
+                });
             }
             // Set shader uniforms.
             mGlslProg->uniform("iResolution", iResolution);
@@ -160,6 +165,13 @@ public:
 #else
             gl::drawSolidRect(Rectf(0, (float)getWindowHeight(), (float)getWindowWidth(), 0));
 #endif
+
+#if 0
+            gl::disableAlphaBlending();
+            gl::setMatricesWindow( app::getWindowSize() ); 
+            gl::drawString(GLSL_ERROR, { 10, 10 });
+            gl::disableAlphaBlending();
+#endif
         });
     }
 
@@ -174,6 +186,8 @@ private:
     vec4 mMouse;
     int mToyID = -1;
     vector<string> mToyNames;
+    FileWatcher mFileWatcher;
+    signals::Connection mWatchConnection;
 };
 
 CINDER_APP(ShaderToyApp, RendererGl, [](App::Settings* settings) {
