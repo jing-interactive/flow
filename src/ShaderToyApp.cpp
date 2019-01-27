@@ -78,8 +78,13 @@ public:
 
         mToyNames = listToyFiles();
 #ifndef CINDER_COCOA_TOUCH
-        auto params = createConfigUI({ 300, 300 });
+        auto params = createConfigUI({ 300, 500 });
         ADD_ENUM_TO_INT(params.get(), TOY_ID, mToyNames);
+        params->addParam("TEST_VALUE.x", &TEST_VALUE.x).group("TEST_VALUE").label("x").step(0.1f);
+        params->addParam("TEST_VALUE.y", &TEST_VALUE.y).group("TEST_VALUE").label("y").step(0.1f);
+        params->addParam("TEST_VALUE.z", &TEST_VALUE.z).group("TEST_VALUE").label("z").step(0.1f);
+        params->addParam("TEST_VALUE.w", &TEST_VALUE.w).group("TEST_VALUE").label("w").step(0.1f);
+        params->addParam("TEST_COLOR", &TEST_COLOR);
 #endif
         mChannel0 = am::texture2d(TEX0_NAME);
         mChannel1 = am::texture2d(TEX1_NAME);
@@ -161,8 +166,10 @@ public:
                 mGlslProg->uniform("iChannel3", 3);
                 mGlslProg->uniform("iDate", iDate);
                 mGlslProg->uniform("iSampleRate", iSampleRate);
-            }
 
+                mGlslProg->uniform("TEST_VALUE", TEST_VALUE);
+                mGlslProg->uniform("TEST_COLOR", TEST_COLOR);
+            }
         });
 
         getWindow()->getSignalDraw().connect([&] {
@@ -190,6 +197,8 @@ public:
 private:
     gl::GlslProgRef mGlslProg;
     gl::ContextRef mLoadingContext;
+    vec4 TEST_VALUE;
+    ColorA TEST_COLOR;
     //! Texture slots for our shader, based on ShaderToy.
     gl::TextureRef mChannel0;
     gl::TextureRef mChannel1;
