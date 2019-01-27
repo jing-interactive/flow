@@ -84,9 +84,8 @@ public:
         mChannel2 = am::texture2d(TEX2_NAME);
         mChannel3 = am::texture2d(TEX3_NAME);
 
-        getWindow()->getSignalDraw().connect([&] {
-            gl::clear();
-
+        getSignalUpdate().connect([&] {
+            _FPS = getAverageFps();
             // Calculate shader parameters.
             // https://www.shadertoy.com/howto
             vec3  iResolution(vec2(getWindowSize()), 1);
@@ -152,6 +151,10 @@ public:
             mGlslProg->uniform("iChannel3", 3);
             mGlslProg->uniform("iDate", iDate);
             mGlslProg->uniform("iSampleRate", iSampleRate);
+        });
+
+        getWindow()->getSignalDraw().connect([&] {
+            gl::clear();
 
             gl::ScopedTextureBind tex0(mChannel0, 0);
             gl::ScopedTextureBind tex1(mChannel1, 1);
