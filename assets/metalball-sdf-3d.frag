@@ -46,8 +46,9 @@ vec3 render( in vec3 ro, in vec3 rd )
     vec2 res = castRay(ro,rd);
     float t = res.x;
     float m = res.y;
-    if( m>-0.5 )
+    if( m>-0.1 )
     {
+        return vec3(t/TEST_VALUE.x,0,1.0);
         vec3 pos = ro + t*rd;
         vec3 nor = calcNormal( pos );
         vec3 ref = reflect( rd, nor );
