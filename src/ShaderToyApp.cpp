@@ -74,6 +74,8 @@ public:
             if (event.getCode() == KeyEvent::KEY_ESCAPE) quit();
         });
 
+        mLoadingContext = gl::env()->createSharedContext(gl::context());
+
         mToyNames = listToyFiles();
 #ifndef CINDER_COCOA_TOUCH
         auto params = createConfigUI({ 300, 300 });
@@ -90,7 +92,8 @@ public:
             // https://www.shadertoy.com/howto
             vec3  iResolution(vec2(getWindowSize()), 1);
             float iGlobalTime = (float)getElapsedSeconds();
-            float iTimeDelta = (float)getElapsedSeconds();
+            float iTimeDelta = 1.0f / _FPS;
+            float iFrame = (float)getElapsedFrames();
             float iChannelTime0 = (float)getElapsedSeconds();
             float iChannelTime1 = (float)getElapsedSeconds();
             float iChannelTime2 = (float)getElapsedSeconds();
@@ -99,7 +102,7 @@ public:
             vec3  iChannelResolution1 = mChannel1 ? vec3(mChannel1->getSize(), 1) : vec3(1);
             vec3  iChannelResolution2 = mChannel2 ? vec3(mChannel2->getSize(), 1) : vec3(1);
             vec3  iChannelResolution3 = mChannel3 ? vec3(mChannel3->getSize(), 1) : vec3(1);
-            float iSampleRate = 1;
+            float iSampleRate = 44100;
 
             time_t now = time(0);
             tm *   t = gmtime(&now);
@@ -114,6 +117,7 @@ public:
                         std::string vs = am::str("common/shadertoy.vert");
                         std::string fs = am::str("common/shadertoy.inc") + loadString(loadAsset(mToyNames[TOY_ID]));
 
+                        mLoadingContext->makeCurrent();
                         auto format = gl::GlslProg::Format().vertex(vs).fragment(fs);
                         //https://github.com/mattdesl/lwjgl-basics/wiki/GLSL-Versions
 #if defined( CINDER_GL_ES )
@@ -121,8 +125,11 @@ public:
 #else
                         format.version(330); // gl 3.3
 #endif
-                        mGlslProg = gl::GlslProg::create(format);
-                        mToyID = TOY_ID;
+                        auto newGlslProg = gl::GlslProg::create(format);
+                        dispatchAsync([&, newGlslProg] {
+                            mGlslProg = newGlslProg;
+                            mToyID = TOY_ID;
+                        });
                     }
                     catch (const std::exception &e) {
                         // Uhoh, something went wrong, but it's not fatal.
@@ -132,29 +139,36 @@ public:
                     }
                 });
             }
-            // Set shader uniforms.
-            mGlslProg->uniform("iResolution", iResolution);
-            mGlslProg->uniform("iTime", iGlobalTime);
-            mGlslProg->uniform("iTimeDelta", iTimeDelta);
-            mGlslProg->uniform("iChannelTime[0]", iChannelTime0);
-            mGlslProg->uniform("iChannelTime[1]", iChannelTime1);
-            mGlslProg->uniform("iChannelTime[2]", iChannelTime2);
-            mGlslProg->uniform("iChannelTime[3]", iChannelTime3);
-            mGlslProg->uniform("iChannelResolution[0]", iChannelResolution0);
-            mGlslProg->uniform("iChannelResolution[1]", iChannelResolution1);
-            mGlslProg->uniform("iChannelResolution[2]", iChannelResolution2);
-            mGlslProg->uniform("iChannelResolution[3]", iChannelResolution3);
-            mGlslProg->uniform("iMouse", mMouse);
-            mGlslProg->uniform("iChannel0", 0);
-            mGlslProg->uniform("iChannel1", 1);
-            mGlslProg->uniform("iChannel2", 2);
-            mGlslProg->uniform("iChannel3", 3);
-            mGlslProg->uniform("iDate", iDate);
-            mGlslProg->uniform("iSampleRate", iSampleRate);
+            if (mGlslProg)
+            {
+                // Set shader uniforms.
+                mGlslProg->uniform("iResolution", iResolution);
+                mGlslProg->uniform("iTime", iGlobalTime);
+                mGlslProg->uniform("iTimeDelta", iTimeDelta);
+                mGlslProg->uniform("iFrame", iFrame);
+                mGlslProg->uniform("iChannelTime[0]", iChannelTime0);
+                mGlslProg->uniform("iChannelTime[1]", iChannelTime1);
+                mGlslProg->uniform("iChannelTime[2]", iChannelTime2);
+                mGlslProg->uniform("iChannelTime[3]", iChannelTime3);
+                mGlslProg->uniform("iChannelResolution[0]", iChannelResolution0);
+                mGlslProg->uniform("iChannelResolution[1]", iChannelResolution1);
+                mGlslProg->uniform("iChannelResolution[2]", iChannelResolution2);
+                mGlslProg->uniform("iChannelResolution[3]", iChannelResolution3);
+                mGlslProg->uniform("iMouse", mMouse);
+                mGlslProg->uniform("iChannel0", 0);
+                mGlslProg->uniform("iChannel1", 1);
+                mGlslProg->uniform("iChannel2", 2);
+                mGlslProg->uniform("iChannel3", 3);
+                mGlslProg->uniform("iDate", iDate);
+                mGlslProg->uniform("iSampleRate", iSampleRate);
+            }
+
         });
 
         getWindow()->getSignalDraw().connect([&] {
             gl::clear();
+
+            if (!mGlslProg) return;
 
             gl::ScopedTextureBind tex0(mChannel0, 0);
             gl::ScopedTextureBind tex1(mChannel1, 1);
@@ -162,12 +176,7 @@ public:
             gl::ScopedTextureBind tex3(mChannel3, 3);
             gl::ScopedGlslProg glsl(mGlslProg);
 
-#if 0
-            //gl::setMatrices( mCam );
-            gl::draw(am::vboMesh(MESH_NAME));
-#else
             gl::drawSolidRect(Rectf(0, (float)getWindowHeight(), (float)getWindowWidth(), 0));
-#endif
 
 #if 0
             gl::disableAlphaBlending();
@@ -179,7 +188,8 @@ public:
     }
 
 private:
-    gl::GlslProgRef     mGlslProg;
+    gl::GlslProgRef mGlslProg;
+    gl::ContextRef mLoadingContext;
     //! Texture slots for our shader, based on ShaderToy.
     gl::TextureRef mChannel0;
     gl::TextureRef mChannel1;
