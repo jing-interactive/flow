@@ -1,9 +1,9 @@
+#include "cinder/FileWatcher.h"
+#include "cinder/Log.h"
+#include "cinder/Utilities.h"
 #include "cinder/app/App.h"
 #include "cinder/app/RendererGl.h"
 #include "cinder/gl/gl.h"
-#include "cinder/Log.h"
-#include "cinder/Utilities.h"
-#include "cinder/FileWatcher.h"
 #include "cinder/params/Params.h"
 
 #include "AssetManager.h"
@@ -17,36 +17,20 @@ using namespace std;
 
 class ShaderToyApp : public App
 {
-public:
-
-    void mouseDown(MouseEvent event) override
-    {
-        mMouse.x = (float)event.getPos().x;
-        mMouse.y = (float)event.getPos().y;
-        mMouse.z = (float)event.getPos().x;
-        mMouse.w = (float)event.getPos().y;
-    }
-
-    void mouseDrag(MouseEvent event) override
-    {
-        mMouse.x = (float)event.getPos().x;
-        mMouse.y = (float)event.getPos().y;
-    }
-
+  public:
     vector<string> listToyFiles()
     {
         vector<string> files;
         auto assetRoot = getAssetPath("");
-        for (auto& p :
-            fs::directory_iterator(assetRoot))
+        for (auto& p : fs::directory_iterator(assetRoot))
         {
             auto ext = p.path().extension();
             if (ext == ".frag" || ext == ".fs" || ext == ".fragment")
             {
                 auto filename = p.path().generic_string();
                 filename.replace(filename.find(assetRoot.generic_string()),
-                    assetRoot.generic_string().size(),
-                    ""); // Left trim the assets prefix
+                                 assetRoot.generic_string().size(),
+                                 ""); // Left trim the assets prefix
 
                 files.push_back(filename);
             }
@@ -61,24 +45,44 @@ public:
 
         gl::enableDepth();
 
+        getWindow()->getSignalMove().connect([&] {
+            APP_X = getWindowPosX();
+            APP_Y = getWindowPosY();
+        });
+
         getWindow()->getSignalResize().connect([&] {
             APP_WIDTH = getWindowWidth();
             APP_HEIGHT = getWindowHeight();
         });
 
-        getWindow()->getSignalClose().connect([&] {
+        getWindow()->getSignalMouseDown().connect([&](MouseEvent event) {
+            mMouse.x = (float)event.getPos().x;
+            mMouse.y = (float)event.getPos().y;
+            mMouse.z = (float)event.getPos().x;
+            mMouse.w = (float)event.getPos().y;
+        });
+
+        getWindow()->getSignalMouseDrag().connect([&](MouseEvent event) {
+            mMouse.x = (float)event.getPos().x;
+            mMouse.y = (float)event.getPos().y;
+        });
+
+        getSignalShouldQuit().connect([&]() -> bool { 
             writeConfig();
+            return true;
         });
 
         getWindow()->getSignalKeyUp().connect([&](KeyEvent& event) {
-            if (event.getCode() == KeyEvent::KEY_ESCAPE) quit();
+            auto key = event.getCode();
+            if (key == KeyEvent::KEY_ESCAPE) quit();
+            if (key == KeyEvent::KEY_f) setFullScreen(!isFullScreen());
         });
 
         mLoadingContext = gl::env()->createSharedContext(gl::context());
 
         mToyNames = listToyFiles();
 #ifndef CINDER_COCOA_TOUCH
-        auto params = createConfigUI({ 300, 500 });
+        auto params = createConfigUI({300, 500});
         ADD_ENUM_TO_INT(params.get(), TOY_ID, mToyNames);
         params->addParam("TEST_VALUE.x", &TEST_VALUE.x).group("TEST_VALUE").label("x").step(0.1f);
         params->addParam("TEST_VALUE.y", &TEST_VALUE.y).group("TEST_VALUE").label("y").step(0.1f);
@@ -95,7 +99,7 @@ public:
             _FPS = getAverageFps();
             // Calculate shader parameters.
             // https://www.shadertoy.com/howto
-            vec3  iResolution(vec2(getWindowSize()), 1);
+            vec3 iResolution(vec2(getWindowSize()), 1);
             float iGlobalTime = (float)getElapsedSeconds();
             float iTimeDelta = 1.0f / _FPS;
             float iFrame = (float)getElapsedFrames();
@@ -103,46 +107,51 @@ public:
             float iChannelTime1 = (float)getElapsedSeconds();
             float iChannelTime2 = (float)getElapsedSeconds();
             float iChannelTime3 = (float)getElapsedSeconds();
-            vec3  iChannelResolution0 = mChannel0 ? vec3(mChannel0->getSize(), 1) : vec3(1);
-            vec3  iChannelResolution1 = mChannel1 ? vec3(mChannel1->getSize(), 1) : vec3(1);
-            vec3  iChannelResolution2 = mChannel2 ? vec3(mChannel2->getSize(), 1) : vec3(1);
-            vec3  iChannelResolution3 = mChannel3 ? vec3(mChannel3->getSize(), 1) : vec3(1);
+            vec3 iChannelResolution0 = mChannel0 ? vec3(mChannel0->getSize(), 1) : vec3(1);
+            vec3 iChannelResolution1 = mChannel1 ? vec3(mChannel1->getSize(), 1) : vec3(1);
+            vec3 iChannelResolution2 = mChannel2 ? vec3(mChannel2->getSize(), 1) : vec3(1);
+            vec3 iChannelResolution3 = mChannel3 ? vec3(mChannel3->getSize(), 1) : vec3(1);
             float iSampleRate = 44100;
 
             time_t now = time(0);
-            tm *   t = gmtime(&now);
-            vec4   iDate(float(t->tm_year + 1900), float(t->tm_mon + 1), float(t->tm_mday), float(t->tm_hour * 3600 + t->tm_min * 60 + t->tm_sec));
+            tm* t = gmtime(&now);
+            vec4 iDate(float(t->tm_year + 1900), float(t->tm_mon + 1), float(t->tm_mday),
+                       float(t->tm_hour * 3600 + t->tm_min * 60 + t->tm_sec));
 
             if (mToyID != TOY_ID)
             {
                 mWatchConnection.disconnect();
-                mWatchConnection = mFileWatcher.watch(getAssetPath(mToyNames[TOY_ID]), [&](const WatchEvent& event) {
-                    try {
-                        GLSL_ERROR = "";
-                        std::string vs = am::str("common/shadertoy.vert");
-                        std::string fs = am::str("common/shadertoy.inc") + loadString(loadAsset(mToyNames[TOY_ID]));
+                mWatchConnection = mFileWatcher.watch(
+                    getAssetPath(mToyNames[TOY_ID]), [&](const WatchEvent& event) {
+                        try
+                        {
+                            GLSL_ERROR = "";
+                            std::string vs = am::str("common/shadertoy.vert");
+                            std::string fs = am::str("common/shadertoy.inc") +
+                                             loadString(loadAsset(mToyNames[TOY_ID]));
 
-                        mLoadingContext->makeCurrent();
-                        auto format = gl::GlslProg::Format().vertex(vs).fragment(fs);
-                        //https://github.com/mattdesl/lwjgl-basics/wiki/GLSL-Versions
-#if defined( CINDER_GL_ES )
-                        format.version(300); // es 3.0
+                            mLoadingContext->makeCurrent();
+                            auto format = gl::GlslProg::Format().vertex(vs).fragment(fs);
+                        // https://github.com/mattdesl/lwjgl-basics/wiki/GLSL-Versions
+#if defined(CINDER_GL_ES)
+                            format.version(300); // es 3.0
 #else
                         format.version(330); // gl 3.3
 #endif
-                        auto newGlslProg = gl::GlslProg::create(format);
-                        dispatchAsync([&, newGlslProg] {
-                            mGlslProg = newGlslProg;
-                            mToyID = TOY_ID;
-                        });
-                    }
-                    catch (const std::exception &e) {
-                        // Uhoh, something went wrong, but it's not fatal.
-                        CI_LOG_EXCEPTION("Failed to compile the shader: ", e);
-                        GLSL_ERROR = e.what();
-                        TOY_ID = mToyID;
-                    }
-                });
+                            auto newGlslProg = gl::GlslProg::create(format);
+                            dispatchAsync([&, newGlslProg] {
+                                mGlslProg = newGlslProg;
+                                mToyID = TOY_ID;
+                            });
+                        }
+                        catch (const std::exception& e)
+                        {
+                            // Uhoh, something went wrong, but it's not fatal.
+                            CI_LOG_EXCEPTION("Failed to compile the shader: ", e);
+                            GLSL_ERROR = e.what();
+                            TOY_ID = mToyID;
+                        }
+                    });
             }
             if (mGlslProg)
             {
@@ -194,7 +203,7 @@ public:
         });
     }
 
-private:
+  private:
     gl::GlslProgRef mGlslProg;
     gl::ContextRef mLoadingContext;
     vec4 TEST_VALUE;
@@ -214,6 +223,7 @@ private:
 
 CINDER_APP(ShaderToyApp, RendererGl, [](App::Settings* settings) {
     readConfig();
+    settings->setWindowPos(APP_X, APP_Y);
     settings->setWindowSize(APP_WIDTH, APP_HEIGHT);
     settings->setMultiTouchEnabled(false);
 })

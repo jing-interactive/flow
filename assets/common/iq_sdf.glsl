@@ -9,8 +9,8 @@
 //------------------------------------------------------------------
 
 // TODO: you need to implement this two virtual functions
-vec2 map( in vec3 pos );
-vec3 render( in vec3 ro, in vec3 rd );
+vec2 map( vec3 pos );
+vec3 render( vec3 ro, vec3 rd );
 
 #define ZERO (min(iFrame,0))
 
