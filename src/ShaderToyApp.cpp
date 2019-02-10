@@ -67,15 +67,14 @@ class ShaderToyApp : public App
             mMouse.y = (float)event.getPos().y;
         });
 
-        getSignalShouldQuit().connect([&]() -> bool { 
-            writeConfig();
-            return true;
-        });
+        getSignalCleanup().connect([&] { writeConfig(); });
 
         getWindow()->getSignalKeyUp().connect([&](KeyEvent& event) {
             auto key = event.getCode();
-            if (key == KeyEvent::KEY_ESCAPE) quit();
-            if (key == KeyEvent::KEY_f) setFullScreen(!isFullScreen());
+            if (key == KeyEvent::KEY_ESCAPE)
+                quit();
+            if (key == KeyEvent::KEY_f)
+                setFullScreen(!isFullScreen());
         });
 
         mLoadingContext = gl::env()->createSharedContext(gl::context());
@@ -184,7 +183,8 @@ class ShaderToyApp : public App
         getWindow()->getSignalDraw().connect([&] {
             gl::clear();
 
-            if (!mGlslProg) return;
+            if (!mGlslProg)
+                return;
 
             gl::ScopedTextureBind tex0(mChannel0, 0);
             gl::ScopedTextureBind tex1(mChannel1, 1);
