@@ -15,8 +15,9 @@ uniform sampler2D iChannel2; // input channel 2 (TODO: support samplerCube)
 uniform sampler2D iChannel3; // input channel 3 (TODO: support samplerCube)
 uniform vec4      iDate; // (year, month, day, time in seconds)
 uniform float     iSampleRate;
-uniform vec4      TEST_VALUE;
+uniform vec4      TEST_VEC4;
 uniform vec4      TEST_COLOR;
+uniform vec3      TEST_ANGLES;
 
 out vec4 oFragColor;
 

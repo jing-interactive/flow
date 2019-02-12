@@ -44,7 +44,7 @@ class ShaderToyApp : public App
     {
         log::makeLogger<log::LoggerFile>();
 
-        texFont = FontHelper::createTextureFont("Consolas", 24);
+        texFont = FontHelper::createTextureFont("Helvetica", 24);
 
         gl::enableDepth();
 
@@ -94,7 +94,7 @@ class ShaderToyApp : public App
         params->addParam("TEST_VEC4.z", &TEST_VEC4.z).group("TEST_VEC4").label("z").step(0.04f);
         params->addParam("TEST_VEC4.w", &TEST_VEC4.w).group("TEST_VEC4").label("w").step(0.08f);
         params->addParam("TEST_COLOR", &TEST_COLOR);
-        params->addParam("TEST_QUAT", &TEST_QUAT);
+        //params->addParam("TEST_ANGLES", &TEST_ANGLES);
 #endif
         mChannel0 = am::texture2d(TEX0_NAME);
         mChannel1 = am::texture2d(TEX1_NAME);
@@ -185,6 +185,7 @@ class ShaderToyApp : public App
 
                 mGlslProg->uniform("TEST_VEC4", TEST_VEC4);
                 mGlslProg->uniform("TEST_COLOR", TEST_COLOR);
+                mGlslProg->uniform("TEST_ANGLES", glm::eulerAngles(TEST_ANGLES));
             }
         });
 
@@ -218,9 +219,9 @@ class ShaderToyApp : public App
   private:
     gl::GlslProgRef mGlslProg;
     gl::ContextRef mLoadingContext;
-    vec4 TEST_VEC4;
+    vec4 TEST_VEC4 = { 0.01, 0.01,0.01,0.01 };
     ColorA TEST_COLOR;
-    quat TEST_QUAT;
+    quat TEST_ANGLES;
     //! Texture slots for our shader, based on ShaderToy.
     gl::TextureRef mChannel0;
     gl::TextureRef mChannel1;

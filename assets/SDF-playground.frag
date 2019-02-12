@@ -21,12 +21,35 @@ float sdBox(in vec2 p, in vec2 pos, in vec2 size);
 float sminCubic(float a, float b, float k);
 float opBlend(float d1, float d2);
 
+// noise
+// http://shadertoy.wikia.com/wiki/Noise
+
+float hash( float n )
+{
+    return fract(sin(n)*43758.5453);
+}
+
+vec2 hash2( vec2 p ) { p=vec2(dot(p,vec2(127.1,311.7)),dot(p,vec2(269.5,183.3))); return fract(sin(p)*18.5453); }
+
 
 // --- SDF - TODO! --------------------------------------------------------------
 
 float sdf(vec2 p)
 {
-    return p.x+p.yxxx;
+    float d = 10.0;
+    
+    for (int j=0;j<10;j++)
+    {
+        for (int i=0;i<10;i++)
+        {
+            vec2 o = hash2(vec2(float(i*0.001+iTime*0.00001), float(j*0.002+iTime*0.00001)));
+            o -= vec2(0.5, 0.5);
+            o *= 2;
+            d = min(d, sdCircle(p, o, hash(o.x*0.0000001) * 0.5));
+        }
+    }
+    
+    return d;
 }
 
 // ------------------------------------------------------------------------------
