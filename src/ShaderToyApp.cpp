@@ -18,7 +18,7 @@ using namespace std;
 class ShaderToyApp : public App
 {
   public:
-    vector<string> listToyFiles()
+    vector<string> listShaderFiles()
     {
         vector<string> files;
         auto assetRoot = getAssetPath("");
@@ -75,19 +75,23 @@ class ShaderToyApp : public App
                 quit();
             if (key == KeyEvent::KEY_f)
                 setFullScreen(!isFullScreen());
+            if (key == KeyEvent::KEY_F4)
+                launchWebBrowser(Url(getAssetPath(mShaderNames[SHADER_ID]).string(), true));
         });
 
         mLoadingContext = gl::env()->createSharedContext(gl::context());
 
-        mToyNames = listToyFiles();
+        mShaderNames = listShaderFiles();
 #ifndef CINDER_COCOA_TOUCH
         auto params = createConfigUI({300, 500});
-        ADD_ENUM_TO_INT(params.get(), TOY_ID, mToyNames);
-        params->addParam("TEST_VALUE.x", &TEST_VALUE.x).group("TEST_VALUE").label("x").step(0.1f);
-        params->addParam("TEST_VALUE.y", &TEST_VALUE.y).group("TEST_VALUE").label("y").step(0.1f);
-        params->addParam("TEST_VALUE.z", &TEST_VALUE.z).group("TEST_VALUE").label("z").step(0.1f);
-        params->addParam("TEST_VALUE.w", &TEST_VALUE.w).group("TEST_VALUE").label("w").step(0.1f);
+        params->addText("Press F4 to edit current shader");
+        ADD_ENUM_TO_INT(params.get(), SHADER_ID, mShaderNames);
+        params->addParam("TEST_VEC4.x", &TEST_VEC4.x).group("TEST_VEC4").label("x").step(0.01f);
+        params->addParam("TEST_VEC4.y", &TEST_VEC4.y).group("TEST_VEC4").label("y").step(0.02f);
+        params->addParam("TEST_VEC4.z", &TEST_VEC4.z).group("TEST_VEC4").label("z").step(0.04f);
+        params->addParam("TEST_VEC4.w", &TEST_VEC4.w).group("TEST_VEC4").label("w").step(0.08f);
         params->addParam("TEST_COLOR", &TEST_COLOR);
+        params->addParam("TEST_QUAT", &TEST_QUAT);
 #endif
         mChannel0 = am::texture2d(TEX0_NAME);
         mChannel1 = am::texture2d(TEX1_NAME);
@@ -117,17 +121,17 @@ class ShaderToyApp : public App
             vec4 iDate(float(t->tm_year + 1900), float(t->tm_mon + 1), float(t->tm_mday),
                        float(t->tm_hour * 3600 + t->tm_min * 60 + t->tm_sec));
 
-            if (mToyID != TOY_ID)
+            if (mShaderID != SHADER_ID)
             {
                 mWatchConnection.disconnect();
                 mWatchConnection = mFileWatcher.watch(
-                    getAssetPath(mToyNames[TOY_ID]), [&](const WatchEvent& event) {
+                    getAssetPath(mShaderNames[SHADER_ID]), [&](const WatchEvent& event) {
                         try
                         {
-                            GLSL_ERROR = "";
+                            SHADER_ERROR = "";
                             std::string vs = am::str("common/shadertoy.vert");
                             std::string fs = am::str("common/shadertoy.inc") +
-                                             loadString(loadAsset(mToyNames[TOY_ID]));
+                                             loadString(loadAsset(mShaderNames[SHADER_ID]));
 
                             mLoadingContext->makeCurrent();
                             auto format = gl::GlslProg::Format().vertex(vs).fragment(fs);
@@ -140,15 +144,15 @@ class ShaderToyApp : public App
                             auto newGlslProg = gl::GlslProg::create(format);
                             dispatchAsync([&, newGlslProg] {
                                 mGlslProg = newGlslProg;
-                                mToyID = TOY_ID;
+                                mShaderID = SHADER_ID;
                             });
                         }
                         catch (const std::exception& e)
                         {
                             // Uhoh, something went wrong, but it's not fatal.
                             CI_LOG_EXCEPTION("Failed to compile the shader: ", e);
-                            GLSL_ERROR = e.what();
-                            TOY_ID = mToyID;
+                            SHADER_ERROR = e.what();
+                            SHADER_ID = mShaderID;
                         }
                     });
             }
@@ -175,7 +179,7 @@ class ShaderToyApp : public App
                 mGlslProg->uniform("iDate", iDate);
                 mGlslProg->uniform("iSampleRate", iSampleRate);
 
-                mGlslProg->uniform("TEST_VALUE", TEST_VALUE);
+                mGlslProg->uniform("TEST_VEC4", TEST_VEC4);
                 mGlslProg->uniform("TEST_COLOR", TEST_COLOR);
             }
         });
@@ -197,7 +201,7 @@ class ShaderToyApp : public App
 #if 0
             gl::disableAlphaBlending();
             gl::setMatricesWindow( app::getWindowSize() ); 
-            gl::drawString(GLSL_ERROR, { 10, 10 });
+            gl::drawString(SHADER_ERROR, { 10, 10 });
             gl::disableAlphaBlending();
 #endif
         });
@@ -206,8 +210,9 @@ class ShaderToyApp : public App
   private:
     gl::GlslProgRef mGlslProg;
     gl::ContextRef mLoadingContext;
-    vec4 TEST_VALUE;
+    vec4 TEST_VEC4;
     ColorA TEST_COLOR;
+    quat TEST_QUAT;
     //! Texture slots for our shader, based on ShaderToy.
     gl::TextureRef mChannel0;
     gl::TextureRef mChannel1;
@@ -215,14 +220,15 @@ class ShaderToyApp : public App
     gl::TextureRef mChannel3;
     //! Our mouse position: xy = current position while mouse down, zw = last click position.
     vec4 mMouse;
-    int mToyID = -1;
-    vector<string> mToyNames;
+    int mShaderID = -1;
+    vector<string> mShaderNames;
     FileWatcher mFileWatcher;
     signals::Connection mWatchConnection;
 };
 
 CINDER_APP(ShaderToyApp, RendererGl, [](App::Settings* settings) {
     readConfig();
+    if (!V_SYNC) settings->disableFrameRate();
     settings->setWindowPos(APP_X, APP_Y);
     settings->setWindowSize(APP_WIDTH, APP_HEIGHT);
     settings->setMultiTouchEnabled(false);
