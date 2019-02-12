@@ -8,6 +8,7 @@
 
 #include "AssetManager.h"
 #include "MiniConfig.h"
+#include "FontHelper.h"
 
 #include <time.h>
 
@@ -42,6 +43,8 @@ class ShaderToyApp : public App
     void setup() override
     {
         log::makeLogger<log::LoggerFile>();
+
+        texFont = FontHelper::createTextureFont("Consolas", 24);
 
         gl::enableDepth();
 
@@ -123,12 +126,14 @@ class ShaderToyApp : public App
 
             if (mShaderID != SHADER_ID)
             {
+                mShaderID = SHADER_ID;
+
                 mWatchConnection.disconnect();
                 mWatchConnection = mFileWatcher.watch(
                     getAssetPath(mShaderNames[SHADER_ID]), [&](const WatchEvent& event) {
                         try
                         {
-                            SHADER_ERROR = "";
+                            mShaderError = "";
                             std::string vs = am::str("common/shadertoy.vert");
                             std::string fs = am::str("common/shadertoy.inc") +
                                              loadString(loadAsset(mShaderNames[SHADER_ID]));
@@ -139,20 +144,19 @@ class ShaderToyApp : public App
 #if defined(CINDER_GL_ES)
                             format.version(300); // es 3.0
 #else
-                        format.version(330); // gl 3.3
+                            format.version(330); // gl 3.3
 #endif
                             auto newGlslProg = gl::GlslProg::create(format);
                             dispatchAsync([&, newGlslProg] {
                                 mGlslProg = newGlslProg;
-                                mShaderID = SHADER_ID;
                             });
                         }
                         catch (const std::exception& e)
                         {
                             // Uhoh, something went wrong, but it's not fatal.
                             CI_LOG_EXCEPTION("Failed to compile the shader: ", e);
-                            SHADER_ERROR = e.what();
-                            SHADER_ID = mShaderID;
+                            mGlslProg.reset();
+                            mShaderError = e.what();
                         }
                     });
             }
@@ -188,7 +192,11 @@ class ShaderToyApp : public App
             gl::clear();
 
             if (!mGlslProg)
+            {
+                gl::ScopedColor clr(Color(1, 0, 0));
+                texFont->drawString(mShaderError, { 10, APP_HEIGHT - 150 });
                 return;
+            }
 
             gl::ScopedTextureBind tex0(mChannel0, 0);
             gl::ScopedTextureBind tex1(mChannel1, 1);
@@ -201,7 +209,7 @@ class ShaderToyApp : public App
 #if 0
             gl::disableAlphaBlending();
             gl::setMatricesWindow( app::getWindowSize() ); 
-            gl::drawString(SHADER_ERROR, { 10, 10 });
+            gl::drawString(mShaderError, { 10, 10 });
             gl::disableAlphaBlending();
 #endif
         });
@@ -224,6 +232,9 @@ class ShaderToyApp : public App
     vector<string> mShaderNames;
     FileWatcher mFileWatcher;
     signals::Connection mWatchConnection;
+
+    gl::TextureFontRef texFont;
+    string mShaderError;
 };
 
 CINDER_APP(ShaderToyApp, RendererGl, [](App::Settings* settings) {

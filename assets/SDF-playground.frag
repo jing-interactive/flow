@@ -26,8 +26,7 @@ float opBlend(float d1, float d2);
 
 float sdf(vec2 p)
 {
-    float d = p.x*p.y-TEST_VALUE.x;
-    return d;
+    return p.x+p.yxxx;
 }
 
 // ------------------------------------------------------------------------------
@@ -35,7 +34,7 @@ float sdf(vec2 p)
 
 // useful functions defined below
 vec2 screenToWorld(vec2 screen);
-vec3 palette(in float t, in vec3 a, in vec3 b, in vec3 c, in vec3 d);
+vec3 palxette(in float t, in vec3 a, in vec3 b, in vec3 c, in vec3 d);
 vec3 shade(float sd);
 
 // compute pixel colour
