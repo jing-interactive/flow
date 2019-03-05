@@ -1,3 +1,4 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Label="Globals">
     <ProjectGuid>{6102246F-BB94-4D8C-8585-31FE2FFF5713}</ProjectGuid>
@@ -13,9 +14,17 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="Debug|x64">
       <Configuration>Debug</Configuration>
       <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
     </ProjectConfiguration>
     <ProjectConfiguration Include="Release|x64">
       <Configuration>Release</Configuration>
@@ -27,7 +36,18 @@
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v140</PlatformToolset>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>false</WholeProgramOptimization>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>false</WholeProgramOptimization>
@@ -38,7 +58,13 @@
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
@@ -46,7 +72,15 @@
     <OutDir>$(ProjectDir)build\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(ProjectDir)build\$(Platform)\$(Configuration)\intermediate\</IntDir>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(ProjectDir)build\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(ProjectDir)build\$(Platform)\$(Configuration)\intermediate\</IntDir>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(ProjectDir)build\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(ProjectDir)build\$(Platform)\$(Configuration)\intermediate\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(ProjectDir)build\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(ProjectDir)build\$(Platform)\$(Configuration)\intermediate\</IntDir>
   </PropertyGroup>
@@ -57,7 +91,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)'=='Release'">
     <ClCompile>
-      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;IMGUI_DISABLE_WIN32_FUNCTIONS;IMGUI_DISABLE_WIN32_DEFAULT_CLIPBOARD_FUNCTIONS;IMGUI_DISABLE_WIN32_DEFAULT_IME_FUNCTIONS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>..\include;"..\..\Cinder\include";"..\..\Cinder\include\ANGLE";%(AdditionalIncludeDirectories);..\..\Cinder\blocks\Cinder-ImGui\lib\imgui;..\..\Cinder\blocks\Cinder-ImGui\include;..\..\Cinder\blocks\Cinder-MeshViewer\include;..\..\Cinder\blocks\Cinder-VNM\include;..\..\Cinder\blocks</AdditionalIncludeDirectories>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
@@ -68,7 +102,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)'=='Debug'">
     <ClCompile>
-      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;IMGUI_DISABLE_WIN32_FUNCTIONS;IMGUI_DISABLE_WIN32_DEFAULT_CLIPBOARD_FUNCTIONS;IMGUI_DISABLE_WIN32_DEFAULT_IME_FUNCTIONS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>..\include;"..\..\Cinder\include";"..\..\Cinder\include\ANGLE";%(AdditionalIncludeDirectories);..\..\Cinder\blocks\Cinder-ImGui\lib\imgui;..\..\Cinder\blocks\Cinder-ImGui\include;..\..\Cinder\blocks\Cinder-MeshViewer\include;..\..\Cinder\blocks\Cinder-VNM\include;..\..\Cinder\blocks</AdditionalIncludeDirectories>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
@@ -91,36 +125,38 @@
   <ItemGroup>
     <None Include="..\..\Cinder\lib\msw-uwp\x64\libEGL.dll">
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</DeploymentContent>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</DeploymentContent>
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</DeploymentContent>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</DeploymentContent>
     </None>
     <None Include="..\..\Cinder\lib\msw-uwp\x64\libGLESv2.dll">
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</DeploymentContent>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</DeploymentContent>
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</DeploymentContent>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</DeploymentContent>
     </None>
     <None Include="..\..\Cinder\lib\msw-uwp\x86\libEGL.dll">
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</DeploymentContent>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</DeploymentContent>
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</DeploymentContent>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</DeploymentContent>
     </None>
     <None Include="..\..\Cinder\lib\msw-uwp\x86\libGLESv2.dll">
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</DeploymentContent>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</DeploymentContent>
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</DeploymentContent>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</DeploymentContent>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\shadertoxApp.cpp" />
+    <ClCompile Include="..\..\Cinder\blocks\Cinder-ImGui\lib\imgui\imgui_widgets.cpp" />
     <ClCompile Include="..\..\Cinder\blocks\Cinder-ImGui\src\CinderImGui.cpp" />
     <ClCompile Include="..\..\Cinder\blocks\Cinder-ImGui\lib\imgui\imgui.cpp" />
     <ClCompile Include="..\..\Cinder\blocks\Cinder-ImGui\lib\imgui\imgui_draw.cpp" />
     <ClCompile Include="..\..\Cinder\blocks\Cinder-ImGui\lib\imgui\imgui_demo.cpp" />
-    <ClCompile Include="..\..\Cinder\blocks\Cinder-ImGui\lib\ImGuizmo\ImGuizmo.cpp" />
-    <ClCompile Include="..\..\Cinder\blocks\Cinder-MeshViewer\src\cigltf.cpp" />
-    <ClCompile Include="..\..\Cinder\blocks\Cinder-MeshViewer\src\ciobj.cpp" />
-    <ClCompile Include="..\..\Cinder\blocks\Cinder-MeshViewer\src\Node.cpp" />
-    <ClCompile Include="..\..\Cinder\blocks\Cinder-MeshViewer\src\Node2D.cpp" />
-    <ClCompile Include="..\..\Cinder\blocks\Cinder-MeshViewer\src\Node3D.cpp" />
-    <ClCompile Include="..\..\Cinder\blocks\Cinder-MeshViewer\src\NodeRectangle.cpp" />
     <ClCompile Include="..\..\Cinder\blocks\Cinder-VNM\src\AssetManager.cpp" />
     <ClCompile Include="..\..\Cinder\blocks\Cinder-VNM\src\MiniConfig.cpp" />
+    <ClCompile Include="..\src\ShaderToyApp.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\Resources.h" />
@@ -128,17 +164,6 @@
     <ClInclude Include="..\..\Cinder\blocks\Cinder-ImGui\lib\imgui\imconfig.h" />
     <ClInclude Include="..\..\Cinder\blocks\Cinder-ImGui\lib\imgui\imgui.h" />
     <ClInclude Include="..\..\Cinder\blocks\Cinder-ImGui\lib\imgui\imgui_internal.h" />
-    <ClInclude Include="..\..\Cinder\blocks\Cinder-MeshViewer\include\cigltf.h" />
-    <ClInclude Include="..\..\Cinder\blocks\Cinder-MeshViewer\include\CinderMeshViewer.h" />
-    <ClInclude Include="..\..\Cinder\blocks\Cinder-MeshViewer\include\ciobj.h" />
-    <ClInclude Include="..\..\Cinder\blocks\Cinder-MeshViewer\include\civox.h" />
-    <ClInclude Include="..\..\Cinder\blocks\Cinder-MeshViewer\include\Node.h" />
-    <ClInclude Include="..\..\Cinder\blocks\Cinder-MeshViewer\include\Node2D.h" />
-    <ClInclude Include="..\..\Cinder\blocks\Cinder-MeshViewer\include\Node3D.h" />
-    <ClInclude Include="..\..\Cinder\blocks\Cinder-MeshViewer\include\NodeExt.h" />
-    <ClInclude Include="..\..\Cinder\blocks\Cinder-MeshViewer\include\NodeRectangle.h" />
-    <ClInclude Include="..\..\Cinder\blocks\Cinder-MeshViewer\include\read_vox.cpp" />
-    <ClInclude Include="..\..\Cinder\blocks\Cinder-MeshViewer\include\read_vox.h" />
     <ClInclude Include="..\..\Cinder\blocks\Cinder-VNM\include\AnsiToUtf.h" />
     <ClInclude Include="..\..\Cinder\blocks\Cinder-VNM\include\AssetManager.h" />
     <ClInclude Include="..\..\Cinder\blocks\Cinder-VNM\include\CaptureHelper.h" />

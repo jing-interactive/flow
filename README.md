@@ -1,5 +1,5 @@
-# shadertoy-native
-Native ShaderToy for Windows, macOS, iOS, Linux etc
+# flow
+`flow` is a friendly software to write shader toy on Windows, macOS, iOS, Linux etc
 
 # To build this project, you need:
 

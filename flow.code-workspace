@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../Cinder/blocks/Cinder-MeshViewer/include"
+		},
+		{
+			"path": "../Cinder/blocks/Cinder-MeshViewer/src"
+		}
+	],
+	"settings": {}
+}

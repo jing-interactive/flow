@@ -16,14 +16,14 @@ using namespace ci;
 using namespace ci::app;
 using namespace std;
 
-class ShaderToyApp : public App
+class FlowApp : public App
 {
   public:
     vector<string> listShaderFiles()
     {
         vector<string> files;
         auto assetRoot = getAssetPath("");
-        for (auto& p : fs::directory_iterator(assetRoot))
+        for (auto &p : fs::directory_iterator(assetRoot))
         {
             auto ext = p.path().extension();
             if (ext == ".frag" || ext == ".fs" || ext == ".fragment")
@@ -72,7 +72,7 @@ class ShaderToyApp : public App
 
         getSignalCleanup().connect([&] { writeConfig(); });
 
-        getWindow()->getSignalKeyUp().connect([&](KeyEvent& event) {
+        getWindow()->getSignalKeyUp().connect([&](KeyEvent &event) {
             auto key = event.getCode();
             if (key == KeyEvent::KEY_ESCAPE)
                 quit();
@@ -85,7 +85,7 @@ class ShaderToyApp : public App
         mLoadingContext = gl::env()->createSharedContext(gl::context());
 
         mShaderNames = listShaderFiles();
-#ifndef CINDER_COCOA_TOUCH
+#if defined(CINDER_MSW_DESKTOP) || defined(CINDER_LINUX) || defined(CINDER_MAC)
         auto params = createConfigUI({300, 500});
         params->addText("Press F4 to edit current shader");
         ADD_ENUM_TO_INT(params.get(), SHADER_ID, mShaderNames);
@@ -120,7 +120,7 @@ class ShaderToyApp : public App
             float iSampleRate = 44100;
 
             time_t now = time(0);
-            tm* t = gmtime(&now);
+            tm *t = gmtime(&now);
             vec4 iDate(float(t->tm_year + 1900), float(t->tm_mon + 1), float(t->tm_mday),
                        float(t->tm_hour * 3600 + t->tm_min * 60 + t->tm_sec));
 
@@ -130,7 +130,7 @@ class ShaderToyApp : public App
 
                 mWatchConnection.disconnect();
                 mWatchConnection = mFileWatcher.watch(
-                    getAssetPath(mShaderNames[SHADER_ID]), [&](const WatchEvent& event) {
+                    getAssetPath(mShaderNames[SHADER_ID]), [&](const WatchEvent &event) {
                         try
                         {
                             mShaderError = "";
@@ -151,7 +151,7 @@ class ShaderToyApp : public App
                                 mGlslProg = newGlslProg;
                             });
                         }
-                        catch (const std::exception& e)
+                        catch (const std::exception &e)
                         {
                             // Uhoh, something went wrong, but it's not fatal.
                             CI_LOG_EXCEPTION("Failed to compile the shader: ", e);
@@ -195,7 +195,7 @@ class ShaderToyApp : public App
             if (!mGlslProg)
             {
                 gl::ScopedColor clr(Color(1, 0, 0));
-                texFont->drawString(mShaderError, { 10, APP_HEIGHT - 150 });
+                texFont->drawString(mShaderError, {10, APP_HEIGHT - 150});
                 return;
             }
 
@@ -219,7 +219,7 @@ class ShaderToyApp : public App
   private:
     gl::GlslProgRef mGlslProg;
     gl::ContextRef mLoadingContext;
-    vec4 TEST_VEC4 = { 0.01, 0.01,0.01,0.01 };
+    vec4 TEST_VEC4 = {0.01, 0.01, 0.01, 0.01};
     ColorA TEST_COLOR;
     quat TEST_ANGLES;
     //! Texture slots for our shader, based on ShaderToy.
@@ -238,9 +238,10 @@ class ShaderToyApp : public App
     string mShaderError;
 };
 
-CINDER_APP(ShaderToyApp, RendererGl, [](App::Settings* settings) {
+CINDER_APP(FlowApp, RendererGl, [](App::Settings *settings) {
     readConfig();
-    if (!V_SYNC) settings->disableFrameRate();
+    if (!V_SYNC)
+        settings->disableFrameRate();
     settings->setWindowPos(APP_X, APP_Y);
     settings->setWindowSize(APP_WIDTH, APP_HEIGHT);
     settings->setMultiTouchEnabled(false);

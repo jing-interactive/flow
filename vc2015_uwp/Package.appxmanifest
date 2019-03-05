@@ -14,7 +14,7 @@
   <mp:PhoneIdentity PhoneProductId="60d12dd1-dc73-4c31-8f57-fc4389e600a6" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
-    <DisplayName>shadertoy-native</DisplayName>
+    <DisplayName>flow</DisplayName>
     <PublisherDisplayName>cinderuser</PublisherDisplayName>
     <Logo>VisualAssets\StoreLogo.png</Logo>
   </Properties>
@@ -30,12 +30,12 @@
   <Applications>
     <Application Id="App"
       Executable="$targetnametoken$.exe"
-      EntryPoint="shadertoy-native.App">
+      EntryPoint="flow.App">
       <uap:VisualElements
-        DisplayName="shadertoy-native"
+        DisplayName="flow"
         Square150x150Logo="VisualAssets\Square150x150Logo.png"
         Square44x44Logo="VisualAssets\Square44x44Logo.png"
-        Description="shadertoy-native"
+        Description="flow"
         BackgroundColor="transparent">
         <uap:DefaultTile Wide310x150Logo="VisualAssets\Wide310x150Logo.png"/>
         <uap:SplashScreen Image="VisualAssets\SplashScreen.png" />

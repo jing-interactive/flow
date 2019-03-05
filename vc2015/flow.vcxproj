@@ -12,7 +12,7 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{65CAE43E-032F-47CF-9F4B-9751F6B38EDD}</ProjectGuid>
-    <RootNamespace>shadertoy-native</RootNamespace>
+    <RootNamespace>flow</RootNamespace>
     <Keyword>Win32Proj</Keyword>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
