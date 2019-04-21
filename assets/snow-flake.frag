@@ -2,7 +2,7 @@
 // License Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License.
 
 #define pi 3.1415926
-#define SPEED 0.1
+#define SPEED 2
 
 // iq's hash function from https://www.shadertoy.com/view/MslGD8
 vec2 hash( vec2 p ) { p=vec2(dot(p,vec2(127.1,311.7)),dot(p,vec2(269.5,183.3))); return fract(sin(p)*18.5453); }
@@ -10,7 +10,7 @@ vec2 hash( vec2 p ) { p=vec2(dot(p,vec2(127.1,311.7)),dot(p,vec2(269.5,183.3)));
 // hash_seed = floor(v)
 vec2 getPos(vec2 hash_seed, float t)
 {
-    return cos(2. * pi * (t*SPEED + hash(hash_seed)) + vec2(0,0));
+    return cos(2. * pi * (t*0.1 + hash(hash_seed)) + vec2(0,0));
 }
 
 float simplegridnoise(vec2 v, float t)
@@ -40,14 +40,14 @@ float fractalblobnoise(vec2 v, float s, float t)
     const float n = 4.;
     for (float i = 0.; i < n; i++)
         // val += 1.0 / (i + 1.0) * blobnoise((i + 1.0) * v + vec2(0.0, t * 1.0), s, t);
-        val += blobnoise(exp2(i) * v - vec2(0, t), s, t);
+        val += blobnoise(exp2(i) * v - vec2(0, t*SPEED), s, t);
 
     return val;
 }
 
 void mainImage( out vec4 fragColor, in vec2 fragCoord )
 {
-#if 1
+#if 0
     float t = TEST_VEC4.x;
 #else
     float t = iTime;
@@ -55,6 +55,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
 
     vec2 r = vec2(4, 0.2 * iResolution.y / iResolution.x);
 	vec2 uv = fragCoord.xy / iResolution.xy;
+    // uv = iMouse.xy / iResolution.xy;
     float val = fractalblobnoise(r * uv * 30.0, 3.5, t);
     //float val = blobnoise(r * uv * 10.0, 5.0);
     //fragColor = vec4(vec3(val), 1.0);
