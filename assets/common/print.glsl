@@ -1,5 +1,5 @@
 // ---- 8< ---- GLSL Number Printing - @P_Malin ---- 8< ----
-// Creative Commons CC0 1.0 Universal (CC-0) 
+// Creative Commons CC0 1.0 Universal (CC-0)
 // https://www.shadertoy.com/view/4sBSWW
 
 float DigitBin( const int x )
@@ -8,12 +8,12 @@ float DigitBin( const int x )
 }
 
 float PrintValue( vec2 vStringCoords, float fValue, float fMaxDigits, float fDecimalPlaces )
-{       
+{
     if ((vStringCoords.y < 0.0) || (vStringCoords.y >= 1.0)) return 0.0;
-    
+
     bool bNeg = ( fValue < 0.0 );
     fValue = abs(fValue);
-    
+
     float fLog10Value = log2(abs(fValue)) / log2(10.0);
     float fBiggestIndex = max(floor(fLog10Value), 0.0);
     float fDigitIndex = fMaxDigits - floor(vStringCoords.x);
@@ -21,7 +21,7 @@ float PrintValue( vec2 vStringCoords, float fValue, float fMaxDigits, float fDec
     if(fDigitIndex > (-fDecimalPlaces - 1.01)) {
         if(fDigitIndex > fBiggestIndex) {
             if((bNeg) && (fDigitIndex < (fBiggestIndex+1.5))) fCharBin = 1792.0;
-        } else {		
+        } else {
             if(fDigitIndex == -1.0) {
                 if(fDecimalPlaces > 0.0) fCharBin = 2.0;
             } else {
@@ -39,7 +39,7 @@ float EasyPrintValue(vec2 vPixelCoord, vec2 fragCoord, float fValue)
 {
     // Multiples of 4x5 work best
     vec2 vFontSize = vec2(8.0, 15.0);
-    
+
     float fDigits = 6.0;
     float fDecimalPlaces = 2.0;
     return PrintValue( (fragCoord - vPixelCoord) / vFontSize, fValue, fDigits, fDecimalPlaces);

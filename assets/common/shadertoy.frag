@@ -1,6 +1,6 @@
 #ifdef GL_ES
 precision mediump float;
-#endif 
+#endif
 
 uniform vec3      iResolution; // viewport resolution (in pixels)
 uniform float     iTime; // shader playback time (in seconds)

@@ -62,14 +62,14 @@ class FlowApp : public App
 
         getWindow()->getSignalMouseDown().connect([&](MouseEvent event) {
             mMouse.x = (float)event.getPos().x;
-            mMouse.y = (float)event.getPos().y;
-            mMouse.z = (float)event.getPos().x;
-            mMouse.w = (float)event.getPos().y;
+            mMouse.y = APP_HEIGHT - (float)event.getPos().y;
+            mMouse.z = mMouse.x;
+            mMouse.w = mMouse.y;
         });
 
         getWindow()->getSignalMouseDrag().connect([&](MouseEvent event) {
             mMouse.x = (float)event.getPos().x;
-            mMouse.y = (float)event.getPos().y;
+            mMouse.y = APP_HEIGHT - (float)event.getPos().y;
         });
 
         getSignalCleanup().connect([&] { writeConfig(); });
@@ -123,7 +123,7 @@ class FlowApp : public App
 
             time_t now = time(0);
             tm* t = gmtime(&now);
-            vec4 iDate(float(t->tm_year + 1900), float(t->tm_mon + 1), float(t->tm_mday),
+            vec4 iDate(float(t->tm_year + 1900), float(t->tm_mon), float(t->tm_mday),
                        float(t->tm_hour * 3600 + t->tm_min * 60 + t->tm_sec));
 
             if (mShaderID != SHADER_ID)
@@ -137,7 +137,7 @@ class FlowApp : public App
                         {
                             mShaderError = "";
                             std::string vs = am::str("common/shadertoy.vert");
-                            std::string fs = am::str("common/shadertoy.inc") +
+                            std::string fs = am::str("common/shadertoy.frag") +
                                              loadString(loadAsset(mShaderNames[SHADER_ID]));
 
                             mLoadingContext->makeCurrent();
