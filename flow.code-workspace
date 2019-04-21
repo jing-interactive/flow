@@ -4,10 +4,13 @@
 			"path": "."
 		},
 		{
-			"path": "../Cinder/blocks/Cinder-MeshViewer/include"
+			"path": "../Cinder/include/Cinder"
+		},		
+		{
+			"path": "../Cinder/blocks/melo/include"
 		},
 		{
-			"path": "../Cinder/blocks/Cinder-MeshViewer/src"
+			"path": "../Cinder/blocks/melo/src"
 		}
 	],
 	"settings": {}
