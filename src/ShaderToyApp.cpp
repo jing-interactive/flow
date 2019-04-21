@@ -80,6 +80,8 @@ class FlowApp : public App
                 quit();
             if (key == KeyEvent::KEY_f)
                 setFullScreen(!isFullScreen());
+            if (key == KeyEvent::KEY_g)
+                GUI_VISIBLE = !GUI_VISIBLE;                
             if (key == KeyEvent::KEY_F4)
                 launchWebBrowser(Url(getAssetPath(mShaderNames[SHADER_ID]).string(), true));
         });
@@ -97,6 +99,7 @@ class FlowApp : public App
         params->addParam("TEST_VEC4.w", &TEST_VEC4.w).group("TEST_VEC4").label("w").step(0.08f);
         params->addParam("TEST_COLOR", &TEST_COLOR);
         //params->addParam("TEST_ANGLES", &TEST_ANGLES);
+        mParams = params;
 #endif
         mChannel0 = am::texture2d(TEX0_NAME);
         mChannel1 = am::texture2d(TEX1_NAME);
@@ -193,6 +196,7 @@ class FlowApp : public App
 
         getWindow()->getSignalDraw().connect([&] {
             gl::clear();
+            mParams->show(GUI_VISIBLE);
 
             if (!mGlslProg)
             {
@@ -238,6 +242,7 @@ class FlowApp : public App
 
     gl::TextureFontRef texFont;
     string mShaderError;
+    params::InterfaceGlRef mParams;
 };
 
 CINDER_APP(FlowApp, RendererGl, [](App::Settings *settings) {
