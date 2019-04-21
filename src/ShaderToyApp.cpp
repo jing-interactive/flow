@@ -9,6 +9,7 @@
 #include "AssetManager.h"
 #include "MiniConfig.h"
 #include "FontHelper.h"
+#include "NvOptimusEnablement.h"
 
 #include <time.h>
 
@@ -43,6 +44,7 @@ class FlowApp : public App
     void setup() override
     {
         log::makeLogger<log::LoggerFile>();
+        _RENDERER = (char*)glGetString(GL_RENDERER);
 
         texFont = FontHelper::createTextureFont("Helvetica", 24);
 
