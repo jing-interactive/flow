@@ -7,8 +7,8 @@
 #include "cinder/params/Params.h"
 
 #include "AssetManager.h"
-#include "MiniConfig.h"
 #include "FontHelper.h"
+#include "MiniConfig.h"
 #include "NvOptimusEnablement.h"
 
 #include <time.h>
@@ -24,7 +24,7 @@ class FlowApp : public App
     {
         vector<string> files;
         auto assetRoot = getAssetPath("");
-        for (auto &p : fs::directory_iterator(assetRoot))
+        for (auto& p : fs::directory_iterator(assetRoot))
         {
             auto ext = p.path().extension();
             if (ext == ".frag" || ext == ".fs" || ext == ".fragment")
@@ -74,14 +74,11 @@ class FlowApp : public App
 
         getSignalCleanup().connect([&] { writeConfig(); });
 
-        getWindow()->getSignalKeyUp().connect([&](KeyEvent &event) {
+        getWindow()->getSignalKeyUp().connect([&](KeyEvent& event) {
             auto key = event.getCode();
-            if (key == KeyEvent::KEY_ESCAPE)
-                quit();
-            if (key == KeyEvent::KEY_f)
-                setFullScreen(!isFullScreen());
-            if (key == KeyEvent::KEY_g)
-                GUI_VISIBLE = !GUI_VISIBLE;                
+            if (key == KeyEvent::KEY_ESCAPE) quit();
+            if (key == KeyEvent::KEY_f) setFullScreen(!isFullScreen());
+            if (key == KeyEvent::KEY_g) GUI_VISIBLE = !GUI_VISIBLE;
             if (key == KeyEvent::KEY_F4)
                 launchWebBrowser(Url(getAssetPath(mShaderNames[SHADER_ID]).string(), true));
         });
@@ -98,7 +95,7 @@ class FlowApp : public App
         params->addParam("TEST_VEC4.z", &TEST_VEC4.z).group("TEST_VEC4").label("z").step(0.04f);
         params->addParam("TEST_VEC4.w", &TEST_VEC4.w).group("TEST_VEC4").label("w").step(0.08f);
         params->addParam("TEST_COLOR", &TEST_COLOR);
-        //params->addParam("TEST_ANGLES", &TEST_ANGLES);
+        // params->addParam("TEST_ANGLES", &TEST_ANGLES);
         mParams = params;
 #endif
         mChannel0 = am::texture2d(TEX0_NAME);
@@ -125,7 +122,7 @@ class FlowApp : public App
             float iSampleRate = 44100;
 
             time_t now = time(0);
-            tm *t = gmtime(&now);
+            tm* t = gmtime(&now);
             vec4 iDate(float(t->tm_year + 1900), float(t->tm_mon + 1), float(t->tm_mday),
                        float(t->tm_hour * 3600 + t->tm_min * 60 + t->tm_sec));
 
@@ -135,7 +132,7 @@ class FlowApp : public App
 
                 mWatchConnection.disconnect();
                 mWatchConnection = mFileWatcher.watch(
-                    getAssetPath(mShaderNames[SHADER_ID]), [&](const WatchEvent &event) {
+                    getAssetPath(mShaderNames[SHADER_ID]), [&](const WatchEvent& event) {
                         try
                         {
                             mShaderError = "";
@@ -152,11 +149,9 @@ class FlowApp : public App
                             format.version(330); // gl 3.3
 #endif
                             auto newGlslProg = gl::GlslProg::create(format);
-                            dispatchAsync([&, newGlslProg] {
-                                mGlslProg = newGlslProg;
-                            });
+                            dispatchAsync([&, newGlslProg] { mGlslProg = newGlslProg; });
                         }
-                        catch (const std::exception &e)
+                        catch (const std::exception& e)
                         {
                             // Uhoh, something went wrong, but it's not fatal.
                             CI_LOG_EXCEPTION("Failed to compile the shader: ", e);
@@ -245,10 +240,9 @@ class FlowApp : public App
     params::InterfaceGlRef mParams;
 };
 
-CINDER_APP(FlowApp, RendererGl, [](App::Settings *settings) {
+CINDER_APP(FlowApp, RendererGl, [](App::Settings* settings) {
     readConfig();
-    if (!V_SYNC)
-        settings->disableFrameRate();
+    if (!V_SYNC) settings->disableFrameRate();
     settings->setWindowPos(APP_X, APP_Y);
     settings->setWindowSize(APP_WIDTH, APP_HEIGHT);
     settings->setMultiTouchEnabled(false);
