@@ -1,129 +1,148 @@
 // Created by inigo quilez - iq/2013
 // License Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License.
 
-//#define FULL_PROCEDURAL
+// Volumetric clouds. It performs level of detail (LOD) for faster rendering
 
-
-#ifdef FULL_PROCEDURAL
-
-// hash based 3d value noise
-float hash( float n )
-{
-    return fract(sin(n)*43758.5453);
-}
-float noise( in vec3 x )
-{
-    vec3 p = floor(x);
-    vec3 f = fract(x);
-
-    f = f*f*(3.0-2.0*f);
-    float n = p.x + p.y*57.0 + 113.0*p.z;
-    return mix(mix(mix( hash(n+  0.0), hash(n+  1.0),f.x),
-                   mix( hash(n+ 57.0), hash(n+ 58.0),f.x),f.y),
-               mix(mix( hash(n+113.0), hash(n+114.0),f.x),
-                   mix( hash(n+170.0), hash(n+171.0),f.x),f.y),f.z);
-}
-#else
-
-// LUT based 3d value noise
 float noise( in vec3 x )
 {
     vec3 p = floor(x);
     vec3 f = fract(x);
 	f = f*f*(3.0-2.0*f);
-	
-	vec2 uv = (p.xy+vec2(37.0,17.0)*p.z) + f.xy;
-	vec2 rg = texture( iChannel0, (uv+ 0.5)/256.0, -100.0 ).yx;
-	return mix( rg.x, rg.y, f.z );
+    
+#if 1
+	vec2 uv = (p.xy+vec2(37.0,239.0)*p.z) + f.xy;
+    vec2 rg = textureLod(iChannel0,(uv+0.5)/256.0,0.0).yx;
+#else
+    ivec3 q = ivec3(p);
+	ivec2 uv = q.xy + ivec2(37,239)*q.z;
+
+	vec2 rg = mix(mix(texelFetch(iChannel0,(uv           )&255,0),
+				      texelFetch(iChannel0,(uv+ivec2(1,0))&255,0),f.x),
+				  mix(texelFetch(iChannel0,(uv+ivec2(0,1))&255,0),
+				      texelFetch(iChannel0,(uv+ivec2(1,1))&255,0),f.x),f.y).yx;
+#endif    
+	return -1.0+2.0*mix( rg.x, rg.y, f.z );
 }
-#endif
 
-vec4 map( in vec3 p )
+float map5( in vec3 p )
 {
-	float d = 0.2 - p.y;
-
-	vec3 q = p - vec3(1.0,0.1,0.0)*iGlobalTime;
+	vec3 q = p - vec3(0.0,0.1,1.0)*iTime;
 	float f;
-    f  = 0.5000*noise( q ); q = q*2.02;
-    f += 0.2500*noise( q ); q = q*2.03;
-    f += 0.1250*noise( q ); q = q*2.01;
-    f += 0.0625*noise( q );
-
-	d += 3.0 * f;
-
-	d = clamp( d, 0.0, 1.0 );
-	
-	vec4 res = vec4( d );
-
-	res.xyz = mix( 1.15*vec3(1.0,0.95,0.8), vec3(0.7,0.7,0.7), res.x );
-	
-	return res;
+    f  = 0.50000*noise( q ); q = q*2.02;
+    f += 0.25000*noise( q ); q = q*2.03;
+    f += 0.12500*noise( q ); q = q*2.01;
+    f += 0.06250*noise( q ); q = q*2.02;
+    f += 0.03125*noise( q );
+	return clamp( 1.5 - p.y - 2.0 + 1.75*f, 0.0, 1.0 );
+}
+float map4( in vec3 p )
+{
+	vec3 q = p - vec3(0.0,0.1,1.0)*iTime;
+	float f;
+    f  = 0.50000*noise( q ); q = q*2.02;
+    f += 0.25000*noise( q ); q = q*2.03;
+    f += 0.12500*noise( q ); q = q*2.01;
+    f += 0.06250*noise( q );
+	return clamp( 1.5 - p.y - 2.0 + 1.75*f, 0.0, 1.0 );
+}
+float map3( in vec3 p )
+{
+	vec3 q = p - vec3(0.0,0.1,1.0)*iTime;
+	float f;
+    f  = 0.50000*noise( q ); q = q*2.02;
+    f += 0.25000*noise( q ); q = q*2.03;
+    f += 0.12500*noise( q );
+	return clamp( 1.5 - p.y - 2.0 + 1.75*f, 0.0, 1.0 );
+}
+float map2( in vec3 p )
+{
+	vec3 q = p - vec3(0.0,0.1,1.0)*iTime;
+	float f;
+    f  = 0.50000*noise( q ); q = q*2.02;
+    f += 0.25000*noise( q );;
+	return clamp( 1.5 - p.y - 2.0 + 1.75*f, 0.0, 1.0 );
 }
 
+vec3 sundir = normalize( vec3(-1.0,0.0,-1.0) );
 
-vec3 sundir = vec3(-1.0,0.0,0.0);
+#define MARCH(STEPS,MAPLOD)\
+for(int i=0; i<STEPS; i++)\
+{\
+   vec3 pos = ro + t*rd;\
+   if( pos.y<-3.0 || pos.y>2.0 || sum.a>0.99 ) break;\
+   float den = MAPLOD( pos );\
+   if( den>0.01 )\
+   {\
+     float dif = clamp((den - MAPLOD(pos+0.3*sundir))/0.6, 0.0, 1.0 );\
+     vec3  lin = vec3(0.65,0.7,0.75)*1.4 + vec3(1.0,0.6,0.3)*dif;\
+     vec4  col = vec4( mix( vec3(1.0,0.95,0.8), vec3(0.25,0.3,0.35), den ), den );\
+     col.xyz *= lin;\
+     col.xyz = mix( col.xyz, bgcol, 1.0-exp(-0.003*t*t) );\
+     col.w *= 0.4;\
+     \
+     col.rgb *= col.a;\
+     sum += col*(1.0-sum.a);\
+   }\
+   t += max(0.05,0.02*t);\
+}
 
-
-vec4 raymarch( in vec3 ro, in vec3 rd )
+vec4 raymarch( in vec3 ro, in vec3 rd, in vec3 bgcol, in ivec2 px )
 {
-	vec4 sum = vec4(0, 0, 0, 0);
+	vec4 sum = vec4(0.0);
 
-	float t = 0.0;
-	for(int i=0; i<64; i++)
-	{
-		if( sum.a > 0.99 ) continue;
+	float t = 0.0;//0.05*texelFetch( iChannel0, px&255, 0 ).x;
 
-		vec3 pos = ro + t*rd;
-		vec4 col = map( pos );
-		
-		#if 1
-		float dif =  clamp((col.w - map(pos+0.3*sundir).w)/0.6, 0.0, 1.0 );
+    MARCH(40,map5);
+    MARCH(40,map4);
+    MARCH(30,map3);
+    MARCH(30,map2);
 
-        vec3 lin = vec3(0.65,0.68,0.7)*1.35 + 0.45*vec3(0.7, 0.5, 0.3)*dif;
-		col.xyz *= lin;
-		#endif
-		
-		col.a *= 0.35;
-		col.rgb *= col.a;
+    return clamp( sum, 0.0, 1.0 );
+}
 
-		sum = sum + col*(1.0 - sum.a);	
+mat3 setCamera( in vec3 ro, in vec3 ta, float cr )
+{
+	vec3 cw = normalize(ta-ro);
+	vec3 cp = vec3(sin(cr), cos(cr),0.0);
+	vec3 cu = normalize( cross(cw,cp) );
+	vec3 cv = normalize( cross(cu,cw) );
+    return mat3( cu, cv, cw );
+}
 
-        #if 0
-		t += 0.1;
-		#else
-		t += max(0.1,0.025*t);
-		#endif
-	}
+vec4 render( in vec3 ro, in vec3 rd, in ivec2 px )
+{
+    // background sky     
+	float sun = clamp( dot(sundir,rd), 0.0, 1.0 );
+	vec3 col = vec3(0.6,0.71,0.75) - rd.y*0.2*vec3(1.0,0.5,1.0) + 0.15*0.5;
+	col += 0.2*vec3(1.0,.6,0.1)*pow( sun, 8.0 );
 
-	sum.xyz /= (0.001+sum.w);
+    // clouds    
+    vec4 res = raymarch( ro, rd, col, px );
+    col = col*(1.0-res.w) + res.xyz;
+    
+    // sun glare    
+	col += 0.2*vec3(1.0,0.4,0.2)*pow( sun, 3.0 );
 
-	return clamp( sum, 0.0, 1.0 );
+    return vec4( col, 1.0 );
 }
 
 void mainImage( out vec4 fragColor, in vec2 fragCoord )
 {
-	vec2 q = fragCoord / iResolution.xy;
-    vec2 p = -1.0 + 2.0*q;
-    p.x *= iResolution.x/ iResolution.y;
-    vec2 mo = -1.0 + 2.0*iMouse.xy / iResolution.xy;
+    vec2 p = (2.0*fragCoord-iResolution.xy)/iResolution.y;
+
+    vec2 m = iMouse.xy/iResolution.xy;
     
     // camera
-    vec3 ro = 4.0*normalize(vec3(cos(2.75-3.0*mo.x), 0.7+(mo.y+1.0), sin(2.75-3.0*mo.x)));
-	vec3 ta = vec3(0.0, 1.0, 0.0);
-    vec3 ww = normalize( ta - ro);
-    vec3 uu = normalize(cross( vec3(0.0,1.0,0.0), ww ));
-    vec3 vv = normalize(cross(ww,uu));
-    vec3 rd = normalize( p.x*uu + p.y*vv + 1.5*ww );
+    vec3 ro = 4.0*normalize(vec3(sin(3.0*m.x), 0.4*m.y, cos(3.0*m.x)));
+	vec3 ta = vec3(0.0, -1.0, 0.0);
+    mat3 ca = setCamera( ro, ta, 0.0 );
+    // ray
+    vec3 rd = ca * normalize( vec3(p.xy,1.5));
+    
+    fragColor = render( ro, rd, ivec2(fragCoord-0.5) );
+}
 
-	
-    vec4 res = raymarch( ro, rd );
-
-	float sun = clamp( dot(sundir,rd), 0.0, 1.0 );
-	vec3 col = vec3(0.6,0.71,0.75) - rd.y*0.2*vec3(1.0,0.5,1.0) + 0.15*0.5;
-	col += 0.2*vec3(1.0,.6,0.1)*pow( sun, 8.0 );
-	col *= 0.95;
-	col = mix( col, res.xyz, res.w );
-	col += 0.1*vec3(1.0,0.4,0.2)*pow( sun, 3.0 );
-	    
-    fragColor = vec4( col, 1.0 );
+void mainVR( out vec4 fragColor, in vec2 fragCoord, in vec3 fragRayOri, in vec3 fragRayDir )
+{
+    fragColor = render( fragRayOri, fragRayDir, ivec2(fragCoord-0.5) );
 }

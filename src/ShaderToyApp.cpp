@@ -103,6 +103,8 @@ class FlowApp : public App
         mChannel2 = am::texture2d(TEX2_NAME);
         mChannel3 = am::texture2d(TEX3_NAME);
 
+        gl::enableVerticalSync(V_SYNC);
+
         getSignalUpdate().connect([&] {
             _FPS = getAverageFps();
             // Calculate shader parameters.
@@ -242,7 +244,6 @@ class FlowApp : public App
 
 CINDER_APP(FlowApp, RendererGl, [](App::Settings* settings) {
     readConfig();
-    if (!V_SYNC) settings->disableFrameRate();
     settings->setWindowPos(APP_X, APP_Y);
     settings->setWindowSize(APP_WIDTH, APP_HEIGHT);
     settings->setMultiTouchEnabled(false);
