@@ -95,7 +95,7 @@ class FlowApp : public App
         params->addParam("TEST_VEC4.z", &TEST_VEC4.z).group("TEST_VEC4").label("z").step(0.04f);
         params->addParam("TEST_VEC4.w", &TEST_VEC4.w).group("TEST_VEC4").label("w").step(0.08f);
         params->addParam("TEST_COLOR", &TEST_COLOR);
-        // params->addParam("TEST_ANGLES", &TEST_ANGLES);
+        params->addParam("TEST_ANGLES", &TEST_ANGLES);
         mParams = params;
 #endif
         mChannel0 = am::texture2d(TEX0_NAME);
