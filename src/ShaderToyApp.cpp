@@ -51,25 +51,25 @@ class FlowApp : public App
         gl::enableDepth();
 
         getWindow()->getSignalMove().connect([&] {
-            APP_X = getWindowPosX();
-            APP_Y = getWindowPosY();
+            _APP_X = getWindowPosX();
+            _APP_Y = getWindowPosY();
         });
 
         getWindow()->getSignalResize().connect([&] {
-            APP_WIDTH = getWindowWidth();
-            APP_HEIGHT = getWindowHeight();
+            _APP_WIDTH = getWindowWidth();
+            _APP_HEIGHT = getWindowHeight();
         });
 
         getWindow()->getSignalMouseDown().connect([&](MouseEvent event) {
             mMouse.x = (float)event.getPos().x;
-            mMouse.y = APP_HEIGHT - (float)event.getPos().y;
+            mMouse.y = _APP_HEIGHT - (float)event.getPos().y;
             mMouse.z = mMouse.x;
             mMouse.w = mMouse.y;
         });
 
         getWindow()->getSignalMouseDrag().connect([&](MouseEvent event) {
             mMouse.x = (float)event.getPos().x;
-            mMouse.y = APP_HEIGHT - (float)event.getPos().y;
+            mMouse.y = _APP_HEIGHT - (float)event.getPos().y;
         });
 
         getSignalCleanup().connect([&] { writeConfig(); });
@@ -103,7 +103,7 @@ class FlowApp : public App
         mChannel2 = am::texture2d(TEX2_NAME);
         mChannel3 = am::texture2d(TEX3_NAME);
 
-        gl::enableVerticalSync(V_SYNC);
+        gl::enableVerticalSync(_V_SYNC);
 
         getSignalUpdate().connect([&] {
             _FPS = getAverageFps();
@@ -198,7 +198,7 @@ class FlowApp : public App
             if (!mGlslProg)
             {
                 gl::ScopedColor clr(Color(1, 0, 0));
-                texFont->drawString(mShaderError, {10, APP_HEIGHT - 150});
+                texFont->drawString(mShaderError, {10, _APP_HEIGHT - 150});
                 return;
             }
 
@@ -244,7 +244,7 @@ class FlowApp : public App
 
 CINDER_APP(FlowApp, RendererGl, [](App::Settings* settings) {
     readConfig();
-    settings->setWindowPos(APP_X, APP_Y);
-    settings->setWindowSize(APP_WIDTH, APP_HEIGHT);
+    settings->setWindowPos(_APP_X, _APP_Y);
+    settings->setWindowSize(_APP_WIDTH, _APP_HEIGHT);
     settings->setMultiTouchEnabled(false);
 })
