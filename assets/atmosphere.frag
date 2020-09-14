@@ -109,10 +109,11 @@ vec3 atmosphere(vec3 r, vec3 r0, vec3 pSun, float iSun, float rPlanet, float rAt
 
 void mainImage( out vec4 fragColor, in vec2 fragCoord )
 {
+    vec2 uv = (fragCoord / iResolution.xy - 0.5) * 2;
     vec3 color = atmosphere(
-        normalize(vec3(fragCoord, TEST_VEC4.w)),           // normalized ray direction
+        normalize(vec3(uv, -1)),           // normalized ray direction
         vec3(0,6372e3,0),               // ray origin
-        TEST_VEC4.xyz,                  // position of the sun
+        TEST_ANGLES.xyz,                  // position of the sun
         22.0,                           // intensity of the sun
         6371e3,                         // radius of the planet in meters
         6471e3,                         // radius of the atmosphere in meters
